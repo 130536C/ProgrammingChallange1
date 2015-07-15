@@ -2,69 +2,63 @@
 // improve code
 //single plater
 
-package Tic_Tac_Toe_Game;
+package test_case_Game;
 
 import java.awt.Color;
-import java.awt.event.KeyAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Arrays;
-import static test_case_Game.Test_Game.button_state;
 
 
-public class Game extends javax.swing.JFrame{
+public class Test_Game extends javax.swing.JFrame{
     
-    static int winComb[][] =  {{1,2,3},{4,5,6},{7,8,9},{1,4,7},{2,5,8},{3,6,9},{1,5,9},{3,5,7}}; // states about winning combinations
+    static int winComb[][] = {{1,2,3},{4,5,6},{7,8,9},{1,4,7},{2,5,8},{3,6,9},{1,5,9},{3,5,7}}; // states about winning combinations
     public static int[] buttonIndex;
-    public static int[][] buttonState;
+    public static int[][] button_state;
     public static int button_Click; // 0-9 numbers to the buttons on board to identify which btn click
     int playerMode; // playerMode 1 = 1, playerMode 2 = 2
-    public static int currentPlayer;
-    int turn; // tracking the current player and turn
-    Human player1;
-    Human player2;
-    Computer player3;
+    public static int currant_player;
+    int turn; // tracking the currant player and turn
+    Test_Human player1;
+    Test_Human player2;
+    Test_Computer player3;
     int player1_win;
     int player2_win;
     int drow_times;
     static boolean win; // state of win the player or not
-    Board board;
     
-    public Game() {
+    public Test_Game() {
         initComponents();
-        addBoard();
     }
     
     public void gameInit(){
-        buttonState = new int[3][3];
+        button_state = new int[3][3];
         int b[]= {0,0,0,0,0,0,0,0,0,0}; // easy to handle 9 index begin with 1
         buttonIndex = b;
-        buttonState[0][0] = 0;
-        buttonState[0][1] = 0;
-        buttonState[0][2] = 0;
-        buttonState[1][0] = 0;
-        buttonState[1][1] = 0;
-        buttonState[1][2] = 0;
-        buttonState[2][0] = 0;
-        buttonState[2][1] = 0;
-        buttonState[2][2] = 0;
-        currentPlayer = 1;
+        button_state[0][0] = 0;
+        button_state[0][1] = 0;
+        button_state[0][2] = 0;
+        button_state[1][0] = 0;
+        button_state[1][1] = 0;
+        button_state[1][2] = 0;
+        button_state[2][0] = 0;
+        button_state[2][1] = 0;
+        button_state[2][2] = 0;
+        currant_player = 1;
         turn = 1;
         win = false;
         Set_Button_Text();
     }
     
     public void init_SinglePlay(){
-        player1 = new Human();
-        player3 = new Computer();
+        player1 = new Test_Human();
+        player3 = new Test_Computer();
         player1_win =0;
         player2_win = 0;
         drow_times = 0;
         win = false;
-        board.drawBoard();
     }
     public void init_2player_Mode(){
-        player1 = new Human();
-        player2 = new Human();
+        player1 = new Test_Human();
+        player2 = new Test_Human();
         player1_win =0;
         player2_win = 0;
         drow_times = 0;
@@ -75,60 +69,52 @@ public class Game extends javax.swing.JFrame{
 
         if(playerMode ==1){  
            // single player
-                /*In single player mode, this methord call when the player click one of button, then first we set user button 
-                visible and then increment the count of button click.
-                then cheak the winning chance of player if there is win then lock the game buttons and set win!
-            if not then computer chance.
-                AI than we implement called.
-                it choose the suitable button and update butto index[] and button state[][] arrays.
-                then we called previous setbuttonText() and chaeakForWin() to setting button and
-                check the winning chance.
-           
-           we implement common methord for set button Text that "X" or "O" and cheak winning chances and set win and lock buttons.
-
-            */
+          //  if(currant_player == 1){
+                
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                
                 Label_Display.setText(" Your 'X' turn");
-                player1.playTurn(currentPlayer,turn);
+                player1.playTurn(currant_player,turn);
                 turn++;
                 Set_Button_Text();
-                check_for_win();
+                cheak_for_win();
+                             
                 //this part only run human not win the game, otherwise after human win, this part also runs (error)
                 if(!win){
-                    Label_Display.setText("Computer 'O' turn");
-                    currentPlayer = 2;
+                    Label_Display.setText("Computer 'O' turn"); 
+                    currant_player = 2;
+                    System.out.println("line 79: "+Arrays.toString(button_state[0])+ "" + Arrays.toString(button_state[1])+" "+Arrays.toString(button_state[2]));
                     player3.minmax(); // cheaking available movement in the board 
+                    // special states of if computer wins, set win flags
+        // set_computer_win();
                     turn++; 
                     Set_Button_Text();                
-                    check_for_win();
-                    currentPlayer = 1;
+                    cheak_for_win();
+                    currant_player = 1;
                     Label_Display.setText(" Your 'X' turn");
+                    System.out.println("line 95: "+Arrays.toString(button_state[0])+ "" + Arrays.toString(button_state[1])+" "+Arrays.toString(button_state[2]));
+
                 }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////                                          
           // }
         }else if(playerMode == 2){
-            //doubly player     
-            /*
-            this multi player algorithms waorks in single application.
-            that works in click. when once click, we assume that next click choose by opperant player by sharing mouse pointer.
-            */
-            if(currentPlayer == 1){
+            //doubly player        
+            if(currant_player == 1){
                 Label_Display.setText("Player1 'X' turn");
-                player1.playTurn(currentPlayer,turn);
+                player1.playTurn(currant_player,turn);
                 Set_Button_Text();
                 Label_Display.setText("Player1 'O' turn");
-                check_for_win();
-                currentPlayer = 2;
+                cheak_for_win();
+                currant_player = 2;
 
                // System.out.println(" player 1");
-            }else if(currentPlayer == 2){
+            }else if(currant_player == 2){
                
-               player2.playTurn(currentPlayer, turn);
+               player2.playTurn(currant_player, turn);
                 Set_Button_Text();                
                 Label_Display.setText("Player1 'X' turn");
-                check_for_win();
-                currentPlayer = 1;                
+                cheak_for_win();
+                currant_player = 1;                
             }
             turn ++; 
         }
@@ -136,17 +122,17 @@ public class Game extends javax.swing.JFrame{
     }
     //this methord for setting the signs of player
     private void Set_Button_Text(){
-
+        
         // if button_stage is 1, for playerMode 1, else equal to 2 , playerMode 2 otherwise null
-        /*Btn_11.setText(buttonState[0][0]== 1? "X" : (buttonState[0][0]==2? "O":" "));
-        Btn_12.setText(buttonState[0][1]== 1? "X" : (buttonState[0][1]==2? "O":" "));
-        Btn_13.setText(buttonState[0][2]== 1? "X" : (buttonState[0][2]==2? "O":" "));
-        Btn_21.setText(buttonState[1][0]== 1? "X" : (buttonState[1][0]==2? "O":" "));
-        Btn_22.setText(buttonState[1][1]== 1? "X" : (buttonState[1][1]==2? "O":" "));
-        Btn_23.setText(buttonState[1][2]== 1? "X" : (buttonState[1][2]==2? "O":" "));
-        Btn_31.setText(buttonState[2][0]== 1? "X" : (buttonState[2][0]==2? "O":" "));
-        Btn_32.setText(buttonState[2][1]== 1? "X" : (buttonState[2][1]==2? "O":" "));
-        Btn_33.setText(buttonState[2][2]== 1? "X" : (buttonState[2][2]==2? "O":" "));*/
+        Btn_11.setText(button_state[0][0]== 1? "X" : (button_state[0][0]==2? "O":" "));
+        Btn_12.setText(button_state[0][1]== 1? "X" : (button_state[0][1]==2? "O":" "));
+        Btn_13.setText(button_state[0][2]== 1? "X" : (button_state[0][2]==2? "O":" "));
+        Btn_21.setText(button_state[1][0]== 1? "X" : (button_state[1][0]==2? "O":" "));
+        Btn_22.setText(button_state[1][1]== 1? "X" : (button_state[1][1]==2? "O":" "));
+        Btn_23.setText(button_state[1][2]== 1? "X" : (button_state[1][2]==2? "O":" "));
+        Btn_31.setText(button_state[2][0]== 1? "X" : (button_state[2][0]==2? "O":" "));
+        Btn_32.setText(button_state[2][1]== 1? "X" : (button_state[2][1]==2? "O":" "));
+        Btn_33.setText(button_state[2][2]== 1? "X" : (button_state[2][2]==2? "O":" "));
         L_Player1_winTimes.setText(Integer.toString(player1_win));
         L_Player2_winTimes.setText(Integer.toString(player2_win));
         L_Drow_times.setText(Integer.toString(drow_times));
@@ -154,47 +140,31 @@ public class Game extends javax.swing.JFrame{
     }
     //when click the button by user, disabled it, becouse otherwise player can re click the button again thats error!!
     private void set_Disabled(){
-        /*Btn_11.setEnabled(buttonState[0][0]!= 0? false : true);
-        Btn_12.setEnabled(buttonState[0][1]!= 0? false : true);
-        Btn_13.setEnabled(buttonState[0][2]!= 0? false : true);
-        Btn_21.setEnabled(buttonState[1][0]!= 0? false : true);
-        Btn_22.setEnabled(buttonState[1][1]!= 0? false : true);
-        Btn_23.setEnabled(buttonState[1][2]!= 0? false : true);
-        Btn_31.setEnabled(buttonState[2][0]!= 0? false : true);
-        Btn_32.setEnabled(buttonState[2][1]!= 0? false : true);
-        Btn_33.setEnabled(buttonState[2][2]!= 0? false : true);*/
-        System.out.println("ok "+turn);
-
+        Btn_11.setEnabled(button_state[0][0]!= 0? false : true);
+        Btn_12.setEnabled(button_state[0][1]!= 0? false : true);
+        Btn_13.setEnabled(button_state[0][2]!= 0? false : true);
+        Btn_21.setEnabled(button_state[1][0]!= 0? false : true);
+        Btn_22.setEnabled(button_state[1][1]!= 0? false : true);
+        Btn_23.setEnabled(button_state[1][2]!= 0? false : true);
+        Btn_31.setEnabled(button_state[2][0]!= 0? false : true);
+        Btn_32.setEnabled(button_state[2][1]!= 0? false : true);
+        Btn_33.setEnabled(button_state[2][2]!= 0? false : true);
     }
-    
-    private void check_for_win(){
-       /*
-        common methord for cheak win
-        we take currant player in variable "currant player" then 
-        cheak with winning combination states. 
-        to do that, we maintain another single array that ButtonIndex[] like [0 1 2 3 4 5 6 7 8 9].
-        then we can easily compare buttons with winning combinations.
-        what we have to do is, 
-            take one of  winning combination,
-            check in arrray that we maintain buttonIndex, that is currant player
-        if  all the numbers true, 
-            that is win!!!
-        then
-            we called displayWin() and LockButtons() methord for 
-            displayed win state and highlighted the winning combination and
-            lock the rest of buttons for not to move further movement.
-        */
+    private void set_computer_win(){
+        System.out.println("line 236 : com win!!!!!! ");
         boolean state = false;
         int[] winCells = new int[3];
         int count;
         for(int[]item : winComb){
             state= false;
             count = 0;
+            System.out.println("Line248: "+Arrays.toString(item));
             for(int i: item){
                 
-                if(buttonIndex[i]== currentPlayer){
+                if(buttonIndex[i]== 2){
                     state = true;
                     winCells[count] = i;
+                    System.out.println("Line248: "+Arrays.toString(winCells));
                     count++;
                 }else{
                     state = false;
@@ -208,6 +178,36 @@ public class Game extends javax.swing.JFrame{
                 break;
             }
         }
+    }
+
+    private void cheak_for_win(){
+        System.out.println("cheak for win()" +currant_player+ Arrays.toString(buttonIndex));
+        boolean state = false;
+        int[] winCells = new int[3];
+        int count;
+        for(int[]item : winComb){
+            state= false;
+            count = 0;
+            for(int i: item){
+                
+                if(buttonIndex[i]== currant_player){
+                    state = true;
+                    winCells[count] = i;
+                    System.out.println("Line 195: cheak for win(): "+ Arrays.toString(winCells)+" : "+currant_player);
+                    count++;
+                }else{
+                    state = false;
+                    break;
+                }
+                
+            }
+            if(state){
+                //player  win
+                displayWin(winCells);
+                System.out.println("line206: player win : currant player : "+ currant_player);
+                break;
+            }
+        }
         if( turn == 10 && !(state)){
             drow_times ++;
             L_Drow_times.setText(String.valueOf(drow_times));
@@ -218,17 +218,19 @@ public class Game extends javax.swing.JFrame{
     }
     //inter funtion of Cheak for win() only apper when it called. it displays if there is win here.
     private void displayWin(int[] win){
-                if(currentPlayer == 1){
+                if(currant_player == 1){
                     Label_Display.setText("Player X Win the Game!");
                     player1_win ++;
                     L_Player1_winTimes.setText(String.valueOf(player1_win));
                     lockButton(win);
                     this.win = true; //globle variable
-                }else if(currentPlayer == 2){
+                }else if(currant_player == 2){
                     Label_Display.setText("Player O Win the Game!");
                     player2_win ++;
                     L_Player2_winTimes.setText(String.valueOf(player2_win));
                     lockButton(win);
+                    this.win = true; //globle variable
+
                 }
                 
                 
@@ -236,7 +238,7 @@ public class Game extends javax.swing.JFrame{
         //inter funtion of Cheak for win() only apper when it called. it coloured RED to winning combination.
     private void lockButton(int[] win){
         for(int i: win){
-            /*switch(i){
+            switch(i){
                 case 1: Btn_11.setForeground(Color.red); ; break;
                 case 2: Btn_12.setForeground(Color.red); break;
                 case 3: Btn_13.setForeground(Color.red)  ; break;
@@ -247,10 +249,10 @@ public class Game extends javax.swing.JFrame{
                 case 8: Btn_32.setForeground(Color.red) ; break;
                 case 9: Btn_33.setForeground(Color.red)  ; break;
                 
-            }*/
+            }
         }
         
-       /* Btn_11.setEnabled(false);
+        Btn_11.setEnabled(false);
         Btn_12.setEnabled(false);
         Btn_13.setEnabled(false);
         Btn_21.setEnabled(false);
@@ -258,11 +260,11 @@ public class Game extends javax.swing.JFrame{
         Btn_23.setEnabled(false);
         Btn_31.setEnabled(false);
         Btn_32.setEnabled(false);
-        Btn_33.setEnabled(false);*/
+        Btn_33.setEnabled(false);
         Btn_Reset.setEnabled(true);
-        
+        this.win = true; //globle variable
+
     }
-    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -273,7 +275,16 @@ public class Game extends javax.swing.JFrame{
         jLabel2 = new javax.swing.JLabel();
         Btn_SinglePlayer = new javax.swing.JButton();
         Btn_TwoPlayer = new javax.swing.JButton();
-        pnlBoard = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        Btn_13 = new javax.swing.JButton();
+        Btn_11 = new javax.swing.JButton();
+        Btn_12 = new javax.swing.JButton();
+        Btn_21 = new javax.swing.JButton();
+        Btn_22 = new javax.swing.JButton();
+        Btn_23 = new javax.swing.JButton();
+        Btn_31 = new javax.swing.JButton();
+        Btn_32 = new javax.swing.JButton();
+        Btn_33 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         Label_Display = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -347,17 +358,126 @@ public class Game extends javax.swing.JFrame{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlBoard.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tic Tac Toe Board", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tic Tac Toe Board", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        javax.swing.GroupLayout pnlBoardLayout = new javax.swing.GroupLayout(pnlBoard);
-        pnlBoard.setLayout(pnlBoardLayout);
-        pnlBoardLayout.setHorizontalGroup(
-            pnlBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 358, Short.MAX_VALUE)
+        Btn_13.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        Btn_13.setText("X");
+        Btn_13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_13ActionPerformed(evt);
+            }
+        });
+
+        Btn_11.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        Btn_11.setText("X");
+        Btn_11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_11ActionPerformed(evt);
+            }
+        });
+
+        Btn_12.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        Btn_12.setText("X");
+        Btn_12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_12ActionPerformed(evt);
+            }
+        });
+
+        Btn_21.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        Btn_21.setText("X");
+        Btn_21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_21ActionPerformed(evt);
+            }
+        });
+
+        Btn_22.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        Btn_22.setText("X");
+        Btn_22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_22ActionPerformed(evt);
+            }
+        });
+
+        Btn_23.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        Btn_23.setText("X");
+        Btn_23.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_23ActionPerformed(evt);
+            }
+        });
+
+        Btn_31.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        Btn_31.setText("X");
+        Btn_31.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_31ActionPerformed(evt);
+            }
+        });
+
+        Btn_32.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        Btn_32.setText("X");
+        Btn_32.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_32ActionPerformed(evt);
+            }
+        });
+
+        Btn_33.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        Btn_33.setText("X");
+        Btn_33.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_33ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(Btn_31, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Btn_32, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Btn_33, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(Btn_21, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Btn_22, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Btn_23, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(Btn_11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Btn_12, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Btn_13, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(14, 14, 14))
         );
-        pnlBoardLayout.setVerticalGroup(
-            pnlBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Btn_13, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Btn_12, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Btn_11, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Btn_23, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Btn_22, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Btn_21, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Btn_33, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Btn_32, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Btn_31, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Score Board", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
@@ -452,7 +572,7 @@ public class Game extends javax.swing.JFrame{
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlBoard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -461,7 +581,7 @@ public class Game extends javax.swing.JFrame{
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlBoard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
@@ -482,10 +602,149 @@ public class Game extends javax.swing.JFrame{
             init_2player_Mode();
     }//GEN-LAST:event_Btn_TwoPlayerActionPerformed
 
+    private void Btn_11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_11ActionPerformed
+        if( playerMode == 1){
+            button_state[0][0] = 1;
+            
+        }else if(playerMode ==2){
+            button_state[0][0]= 2;           
+        }
+        if(currant_player == 1){
+                buttonIndex[1]= 1;                
+        }else{
+                buttonIndex[1] = 2;
+        }
+         button_Click = 1; // top left corner
+         start_Play();
+
+    }//GEN-LAST:event_Btn_11ActionPerformed
+
+    private void Btn_12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_12ActionPerformed
+        if( playerMode == 1){
+            button_state[0][1] = 1;
+        }else if(playerMode ==2){
+            button_state[0][1]= 2;
+        }
+        if(currant_player == 1){
+                buttonIndex[2]= 1;                
+        }else{
+                buttonIndex[2] = 2;
+        }
+        button_Click = 2; // top center
+        start_Play();
+
+    }//GEN-LAST:event_Btn_12ActionPerformed
+
+    private void Btn_13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_13ActionPerformed
+        if( playerMode == 1){
+            button_state[0][2] = 1;
+        }else if(playerMode ==2){
+            button_state[0][2]= 2;            
+        }
+        if(currant_player == 1){
+                buttonIndex[3]= 1;                
+        }else{
+                buttonIndex[3] = 2;
+        }
+        button_Click = 3; // top right corner
+        start_Play();
+
+    }//GEN-LAST:event_Btn_13ActionPerformed
+
+    private void Btn_21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_21ActionPerformed
+        if( playerMode == 1){
+            button_state[1][0] = 1;
+        }else if(playerMode ==2){
+            button_state[1][0]= 2;            
+        } 
+        if(currant_player == 1){
+                buttonIndex[4]= 1;                
+        }else{
+                buttonIndex[4] = 2;
+         }
+        button_Click = 4; //middle left
+        start_Play();
+    }//GEN-LAST:event_Btn_21ActionPerformed
+
+    private void Btn_22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_22ActionPerformed
+        if( playerMode == 1){
+            button_state[1][1] = 1;
+        }else if(playerMode ==2){
+            button_state[1][1]= 2;            
+        }
+        if(currant_player == 1){
+                buttonIndex[5]= 1;                
+        }else{
+                buttonIndex[5] = 2;
+        }
+        button_Click = 5;// center
+        start_Play();
+    }//GEN-LAST:event_Btn_22ActionPerformed
+
+    private void Btn_23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_23ActionPerformed
+        if( playerMode == 1){
+            button_state[1][2] = 1;
+        }else if(playerMode ==2){
+            button_state[1][2]= 2;            
+        }
+        if(currant_player == 1){
+                buttonIndex[6]= 1;                
+        }else{
+                buttonIndex[6] = 2;
+        }
+        button_Click = 6; // middle right
+        start_Play();
+    }//GEN-LAST:event_Btn_23ActionPerformed
+
+    private void Btn_31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_31ActionPerformed
+        if( playerMode == 1){
+            button_state[2][0] = 1;
+        }else if(playerMode ==2){
+            button_state[2][0]= 2;
+        }
+        if(currant_player == 1){
+                buttonIndex[7]= 1;                
+        }else{
+                buttonIndex[7] = 2;
+        }
+       button_Click = 7; // bottom left
+       start_Play();
+    }//GEN-LAST:event_Btn_31ActionPerformed
+
+    private void Btn_32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_32ActionPerformed
+        if( playerMode == 1){
+            button_state[2][1] = 1;
+        }else if(playerMode ==2){
+            button_state[2][1]= 2;            
+        }
+        if(currant_player == 1){
+                buttonIndex[8]= 1;                
+        }else{
+                buttonIndex[8] = 2;
+        }
+        button_Click = 8; // bottom center
+        start_Play();
+    }//GEN-LAST:event_Btn_32ActionPerformed
+
+    private void Btn_33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_33ActionPerformed
+        if( playerMode == 1){
+            button_state[2][2] = 1;
+        }else if(playerMode ==2){
+            button_state[2][2]= 2;            
+        } 
+        if(currant_player == 1){
+                buttonIndex[9]= 1;                
+        }else{
+                buttonIndex[9] = 2;
+        }
+        button_Click = 9; // bottom right
+        start_Play();
+    }//GEN-LAST:event_Btn_33ActionPerformed
+
     private void Btn_ResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_ResetActionPerformed
 
         Label_Display.setText(" Game Reset. Begin with Player X ");
-        /*Btn_11.setEnabled(true); Btn_11.setForeground(Color.BLACK);
+        Btn_11.setEnabled(true); Btn_11.setForeground(Color.BLACK);
         Btn_12.setEnabled(true); Btn_12.setForeground(Color.BLACK);
         Btn_13.setEnabled(true); Btn_13.setForeground(Color.BLACK);
         Btn_21.setEnabled(true); Btn_21.setForeground(Color.BLACK);
@@ -493,7 +752,7 @@ public class Game extends javax.swing.JFrame{
         Btn_23.setEnabled(true); Btn_23.setForeground(Color.BLACK);
         Btn_31.setEnabled(true); Btn_31.setForeground(Color.BLACK);
         Btn_32.setEnabled(true); Btn_32.setForeground(Color.BLACK);
-        Btn_33.setEnabled(true); Btn_33.setForeground(Color.BLACK);*/
+        Btn_33.setEnabled(true); Btn_33.setForeground(Color.BLACK);
         
         gameInit();
         if(playerMode == 2){
@@ -519,14 +778,15 @@ public class Game extends javax.swing.JFrame{
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Test_Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Test_Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Test_Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Test_Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form 
@@ -536,7 +796,7 @@ public class Game extends javax.swing.JFrame{
             }
         }); */
         
-        Game t = new Game();
+        Test_Game t = new Test_Game();
         t.setVisible(true);
         // t.start();
         t.gameInit();
@@ -545,6 +805,15 @@ public class Game extends javax.swing.JFrame{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Btn_11;
+    private javax.swing.JButton Btn_12;
+    private javax.swing.JButton Btn_13;
+    private javax.swing.JButton Btn_21;
+    private javax.swing.JButton Btn_22;
+    private javax.swing.JButton Btn_23;
+    private javax.swing.JButton Btn_31;
+    private javax.swing.JButton Btn_32;
+    private javax.swing.JButton Btn_33;
     private javax.swing.JButton Btn_Reset;
     private javax.swing.JButton Btn_SinglePlayer;
     private javax.swing.JButton Btn_TwoPlayer;
@@ -557,17 +826,10 @@ public class Game extends javax.swing.JFrame{
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel pnlBoard;
     // End of variables declaration//GEN-END:variables
-
-    private void addBoard() {
-        board = new Board();
-        board.setBounds(40, 55, 300, 300);
-        pnlBoard.add(board);
-        board.addMouseListener(board);
-    }
 
    
 
