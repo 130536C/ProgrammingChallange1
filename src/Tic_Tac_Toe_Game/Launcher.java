@@ -13,7 +13,6 @@ public class Launcher {
     
     public static void main(String[] args){
         Game g = new Game();
-        //Board board = new Board(300,300);
         g.setVisible(true);
     }
     

@@ -15,19 +15,28 @@ import javax.imageio.ImageIO;
 
 public class Board extends Canvas implements MouseListener{
     
-    int position;
-    int boundryX;
-    int boundryY;
-    int player = 0;
+    private int position;
+    private int boundryX;
+    private int boundryY;
+    private String[] moves;
+    private Player[] player;
+    private int turn = 0;
+    private boolean win,draw;
+    private Game game;
     
-    public Board(){
+    public Board(Game game,Player player1, Player player2){
+        moves = new String[]{"","","","","","","","",""};
+        player = new Player[]{player1,player2};
+        win = false; draw = false;
+        this.game = game;
         this.setIgnoreRepaint(true);
     }
     
     public void drawBoard(){
         BufferedImage bg = null;
         try {
-            bg = ImageIO.read(new File("src/Resources/background.jpg"));
+            bg = ImageIO.read(new File("src/Resources/Background.jpg"));
+            System.out.println("Success");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -48,6 +57,8 @@ public class Board extends Canvas implements MouseListener{
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
+            Toolkit.getDefaultToolkit().sync();
+            g.dispose();
         }
         try {
             Thread.sleep(2);
@@ -64,6 +75,8 @@ public class Board extends Canvas implements MouseListener{
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
+            Toolkit.getDefaultToolkit().sync();
+            g.dispose();
         }
     }
     
@@ -77,22 +90,44 @@ public class Board extends Canvas implements MouseListener{
     }
     
     private void setPosition(int x, int y) {
-        if (x<100 && y<100){position = 1; boundryX=0; boundryY=0;}
-        else if(x<200 && y <100){position = 2; boundryX=100; boundryY=0;}
-        else if(x<300 && y <100){position = 3; boundryX=200; boundryY=0;}
-        else if(x<100 && y <200){position = 4; boundryX=0; boundryY=100;}
-        else if(x<200 && y <200){position = 5; boundryX=100; boundryY=100;}
-        else if(x<300 && y <200){position = 6; boundryX=200; boundryY=100;}
-        else if(x<100 && y <300){position = 7; boundryX=0; boundryY=200;}
-        else if(x<200 && y <300){position = 8; boundryX=100; boundryY=200;}
-        else{position = 9; boundryX=200; boundryY=200;}
+        if (x<100 && y<100){position = 0; boundryX=0; boundryY=0;}
+        else if(x<200 && y <100){position = 1; boundryX=100; boundryY=0;}
+        else if(x<300 && y <100){position = 2; boundryX=200; boundryY=0;}
+        else if(x<100 && y <200){position = 3; boundryX=0; boundryY=100;}
+        else if(x<200 && y <200){position = 4; boundryX=100; boundryY=100;}
+        else if(x<300 && y <200){position = 5; boundryX=200; boundryY=100;}
+        else if(x<100 && y <300){position = 6; boundryX=0; boundryY=200;}
+        else if(x<200 && y <300){position = 7; boundryX=100; boundryY=200;}
+        else{position = 8; boundryX=200; boundryY=200;}
     }
     
     @Override
     public void mouseClicked(MouseEvent e) {
-        setPosition(e.getX(),e.getY());
-        if (player%2==0){drawO();player++;}
-        else{drawX();player++;}
+        if (!win && !draw){
+            setPosition(e.getX(),e.getY());
+            if (moves[position].equals("")){
+                if (turn%2==0){
+                    drawX();
+                    game.lblStatus.setText(player[(turn+1)%2].getName()+"'s turn - "+player[(turn+1)%2].getSymbol());
+                }
+                else{
+                    drawO();
+                    game.lblStatus.setText(player[(turn+1)%2].getName()+"'s turn - "+player[(turn+1)%2].getSymbol());
+                }
+                moves[position] = player[turn%2].getSymbol();
+                player[turn%2].setAlignment(position, 1);
+                if (player[turn%2].isWin()){
+                    win = true;
+                    game.lblStatus.setText(player[turn%2].getName()+" wins!");
+                    game.btnNextRound.setEnabled(true);
+                }else if (turn==8){
+                    draw = true;
+                    game.lblStatus.setText("Game draw!");
+                    game.btnNextRound.setEnabled(true);
+                }
+                turn++;
+            }
+        }
     }
 
     @Override

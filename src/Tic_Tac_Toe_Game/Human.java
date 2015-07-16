@@ -1,11 +1,9 @@
 
-
 package Tic_Tac_Toe_Game;
-
-import java.util.Arrays;
 
 public class Human extends Player{
 
+    int wins;
     
     public void playTurn(int pl, int turn) {
         
@@ -25,6 +23,10 @@ public class Human extends Player{
         
         Game.button_Click = 0;  
 
+    }
+    
+    public Human(String name, String symbol){
+        super(name,symbol);
     }
     
 }

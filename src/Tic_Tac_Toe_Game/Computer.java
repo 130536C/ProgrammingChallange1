@@ -1,7 +1,6 @@
 
-
 package Tic_Tac_Toe_Game;
-import java.util.Arrays;
+
 import java.util.Random;
 
 public class Computer extends Player{
@@ -131,5 +130,8 @@ public class Computer extends Player{
 
     }
 
+    public Computer(String name, String symbol){
+        super(name,symbol);
+    }
     
 }
