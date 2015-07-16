@@ -2,15 +2,17 @@
 // improve code
 //single plater
 
-package Tic_Tac_Toe_Game;
+package gui;
 
+import Tic_Tac_Toe_Game.Human;
+import Tic_Tac_Toe_Game.Player;
 import java.awt.Cursor;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 
-public class Game extends javax.swing.JFrame{
+public class GameFrame extends javax.swing.JFrame{
     
     static int winComb[][] =  {{1,2,3},{4,5,6},{7,8,9},{1,4,7},{2,5,8},{3,6,9},{1,5,9},{3,5,7}}; // states about winning combinations
     public static int[] buttonIndex;
@@ -30,7 +32,7 @@ public class Game extends javax.swing.JFrame{
     Player player1,player2;
     private boolean saveNewPlayer;
     
-    public Game() {
+    public GameFrame() {
         this.saveNewPlayer = false;
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -838,8 +840,7 @@ public class Game extends javax.swing.JFrame{
         /*Label_Display.setText(" Single Player Mode select , Player X turn");
         playerMode =1;
         gameInit();
-        init_SinglePlay();
-        pnlBoard.setVisible(true);*/
+        init_SinglePlay();*/
         pnlBoard.setVisible(false);
         pnlScore.setVisible(false);
         pnlSelectPlayer.setVisible(false);
@@ -848,7 +849,6 @@ public class Game extends javax.swing.JFrame{
         rBtnNormal.setVisible(true);
         rBtnHard.setVisible(true);
         pnlSettings.setVisible(true);
-        //board.drawBoard();
     }//GEN-LAST:event_Btn_SinglePlayerActionPerformed
 
     private void Btn_TwoPlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_TwoPlayerActionPerformed
@@ -864,21 +864,10 @@ public class Game extends javax.swing.JFrame{
         rBtnNormal.setVisible(false);
         rBtnHard.setVisible(false);
         pnlSettings.setVisible(true);    
-        //board.drawBoard();
     }//GEN-LAST:event_Btn_TwoPlayerActionPerformed
 
     private void btnNextRoundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextRoundActionPerformed
-        /*lblStatus.setText(" Game Reset. Begin with Player X ");
-        /*Btn_11.setEnabled(true); Btn_11.setForeground(Color.BLACK);
-        Btn_12.setEnabled(true); Btn_12.setForeground(Color.BLACK);
-        Btn_13.setEnabled(true); Btn_13.setForeground(Color.BLACK);
-        Btn_21.setEnabled(true); Btn_21.setForeground(Color.BLACK);
-        Btn_22.setEnabled(true); Btn_22.setForeground(Color.BLACK);
-        Btn_23.setEnabled(true); Btn_23.setForeground(Color.BLACK);
-        Btn_31.setEnabled(true); Btn_31.setForeground(Color.BLACK);
-        Btn_32.setEnabled(true); Btn_32.setForeground(Color.BLACK);
-        Btn_33.setEnabled(true); Btn_33.setForeground(Color.BLACK);
-        
+        /*        
         gameInit();
         if(playerMode == 2){
              //    init_2player_Mode();
@@ -937,9 +926,9 @@ public class Game extends javax.swing.JFrame{
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnStartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartGameActionPerformed
-        pnlBoard.removeAll();
         player1 = new Human(txtPlayer1Name.getText(), "X");
         player2 = new Human(txtPlayer2Name.getText(), "O");
+        pnlBoard.removeAll();
         addBoard();
         lblStatus.setText(player1.getName()+"'s turn - X");
         pnlSelectPlayer.setVisible(false);
@@ -971,11 +960,11 @@ public class Game extends javax.swing.JFrame{
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Game().setVisible(true);
+                new GameFrame().setVisible(true);
             }
         });
         
-        /*Game t = new Game();
+        /*GameFrame t = new GameFrame();
         t.setVisible(true);
         // t.start();
         t.gameInit();*/

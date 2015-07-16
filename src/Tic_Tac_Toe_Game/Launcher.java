@@ -5,6 +5,8 @@
  */
 package Tic_Tac_Toe_Game;
 
+import gui.GameFrame;
+
 /**
  *
  * @author Irfad Hussain
@@ -12,7 +14,7 @@ package Tic_Tac_Toe_Game;
 public class Launcher {
     
     public static void main(String[] args){
-        Game g = new Game();
+        GameFrame g = new GameFrame();
         g.setVisible(true);
     }
     

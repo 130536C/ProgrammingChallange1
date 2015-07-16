@@ -1,6 +1,7 @@
 
 package Tic_Tac_Toe_Game;
 
+import gui.GameFrame;
 import java.util.Random;
 
 public class Computer extends Player{
@@ -13,7 +14,7 @@ public class Computer extends Player{
         int check; //value for line 19 purpose
         boolean found = false; // if rule is satisfied, then don't go for other rules
         //put the button states in to one array
-        for(int[] row : Game.buttonState){
+        for(int[] row : GameFrame.buttonState){
             for (int i : row) {
                 btn_index[count] = i;
                 count++;
@@ -25,7 +26,7 @@ public class Computer extends Player{
             //the winning combination, go for it
              playTurn(2, check);
              found = true;
-             Game.win = true; // state updated to win
+             //Game.win = true; // state updated to win
         }
         // Rule 2: If the opponent has a winning move, block it.
         if(!found){
@@ -116,17 +117,17 @@ public class Computer extends Player{
         
         switch(move)
         {
-           case 0 : Game.buttonState[0][0]= pl;Game.buttonIndex[1]=pl;break;
-            case 1 : Game.buttonState[0][1]= pl;Game.buttonIndex[2]=pl;break;
-            case 2 : Game.buttonState[0][2]= pl;Game.buttonIndex[3]=pl;break;
-            case 3 : Game.buttonState[1][0]= pl;Game.buttonIndex[4]=pl;break;
-            case 4 : Game.buttonState[1][1]= pl;Game.buttonIndex[5]=pl;break;
-            case 5 : Game.buttonState[1][2]= pl;Game.buttonIndex[6]=pl;break;
-            case 6 : Game.buttonState[2][0]= pl;Game.buttonIndex[7]=pl;break;
-            case 7 : Game.buttonState[2][1]= pl;Game.buttonIndex[8]=pl;break;
-            case 8 : Game.buttonState[2][2]= pl;Game.buttonIndex[9]=pl;break;
+           case 0 : GameFrame.buttonState[0][0]= pl;GameFrame.buttonIndex[1]=pl;break;
+            case 1 : GameFrame.buttonState[0][1]= pl;GameFrame.buttonIndex[2]=pl;break;
+            case 2 : GameFrame.buttonState[0][2]= pl;GameFrame.buttonIndex[3]=pl;break;
+            case 3 : GameFrame.buttonState[1][0]= pl;GameFrame.buttonIndex[4]=pl;break;
+            case 4 : GameFrame.buttonState[1][1]= pl;GameFrame.buttonIndex[5]=pl;break;
+            case 5 : GameFrame.buttonState[1][2]= pl;GameFrame.buttonIndex[6]=pl;break;
+            case 6 : GameFrame.buttonState[2][0]= pl;GameFrame.buttonIndex[7]=pl;break;
+            case 7 : GameFrame.buttonState[2][1]= pl;GameFrame.buttonIndex[8]=pl;break;
+            case 8 : GameFrame.buttonState[2][2]= pl;GameFrame.buttonIndex[9]=pl;break;
         }
-        Game.button_Click = 0;  
+        GameFrame.button_Click = 0;  
 
     }
 

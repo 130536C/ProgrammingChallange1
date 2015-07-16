@@ -1,6 +1,7 @@
 
-package Tic_Tac_Toe_Game;
+package gui;
 
+import Tic_Tac_Toe_Game.Player;
 import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -22,9 +23,9 @@ public class Board extends Canvas implements MouseListener{
     private Player[] player;
     private int turn = 0;
     private boolean win,draw;
-    private Game game;
+    private GameFrame game;
     
-    public Board(Game game,Player player1, Player player2){
+    public Board(GameFrame game,Player player1, Player player2){
         moves = new String[]{"","","","","","","","",""};
         player = new Player[]{player1,player2};
         win = false; draw = false;
@@ -36,7 +37,6 @@ public class Board extends Canvas implements MouseListener{
         BufferedImage bg = null;
         try {
             bg = ImageIO.read(new File("src/Resources/Background.jpg"));
-            System.out.println("Success");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
