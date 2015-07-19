@@ -31,9 +31,9 @@ public abstract class Player {
         this.name = name;
     }
     
-    public abstract void playTurn(int pl,int turn);
+    public abstract int play(String[] board,Player opponent,int turn);
     
-    public boolean isWin(){
+    public static boolean isWin(int[] alignments){
         for (int alignment : alignments){
             if (alignment==3) return true;
         }
@@ -61,6 +61,10 @@ public abstract class Player {
             case 8:
                 alignments[2] += add; alignments[5] += add; alignments[6] += add; break;
         }
+    }
+    
+    public int[] getAlignments() {
+        return alignments;
     }
     
 }
