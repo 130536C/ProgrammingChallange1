@@ -12,6 +12,9 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 public class Board extends Canvas implements MouseListener{
@@ -36,7 +39,7 @@ public class Board extends Canvas implements MouseListener{
     public void drawBoard(){
         BufferedImage bg = null;
         try {
-            bg = ImageIO.read(new File("src/Resources/background.jpg"));
+            bg = ImageIO.read(getClass().getResourceAsStream("/Resources/background.jpg"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }

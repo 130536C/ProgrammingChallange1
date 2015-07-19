@@ -90,6 +90,7 @@ public class GameFrame extends javax.swing.JFrame{
         btnSelectPlayer2 = new javax.swing.JButton();
         btnStartGame = new javax.swing.JButton();
         pnlBoard = new javax.swing.JPanel();
+        lblBoard = new javax.swing.JLabel();
         pnlSelectPlayer = new javax.swing.JPanel();
         lblSelectPlayerHeader = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -458,16 +459,26 @@ public class GameFrame extends javax.swing.JFrame{
         );
 
         pnlBoard.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tic Tac Toe Board", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
+        pnlBoard.setMaximumSize(new java.awt.Dimension(374, 413));
+        pnlBoard.setMinimumSize(new java.awt.Dimension(374, 413));
+
+        lblBoard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/background.jpg"))); // NOI18N
 
         javax.swing.GroupLayout pnlBoardLayout = new javax.swing.GroupLayout(pnlBoard);
         pnlBoard.setLayout(pnlBoardLayout);
         pnlBoardLayout.setHorizontalGroup(
             pnlBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 362, Short.MAX_VALUE)
+            .addGroup(pnlBoardLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(lblBoard)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         pnlBoardLayout.setVerticalGroup(
             pnlBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 379, Short.MAX_VALUE)
+            .addGroup(pnlBoardLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblBoard)
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         pnlSelectPlayer.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -582,8 +593,7 @@ public class GameFrame extends javax.swing.JFrame{
             pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlRightLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlBoard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(pnlBoard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlRightLayout.createSequentialGroup()
                     .addContainerGap()
@@ -797,6 +807,7 @@ public class GameFrame extends javax.swing.JFrame{
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblBoard;
     private javax.swing.JLabel lblDifficulty;
     private javax.swing.JLabel lblSelectPlayerHeader;
     protected javax.swing.JLabel lblStatus;
