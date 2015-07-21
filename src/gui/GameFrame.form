@@ -145,9 +145,9 @@
                       <EmptySpace pref="32" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="Btn_TwoPlayer" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnTwoPlayer" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="Btn_SinglePlayer" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnSinglePlayer" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jLabel3" alignment="0" min="-2" pref="88" max="-2" attributes="0"/>
                       </Group>
@@ -171,8 +171,8 @@
                       <Component id="jLabel3" min="-2" pref="23" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="Btn_TwoPlayer" min="-2" max="-2" attributes="0"/>
-                          <Component id="Btn_SinglePlayer" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnTwoPlayer" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnSinglePlayer" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                       <Component id="btnNetworkGame" min="-2" max="-2" attributes="0"/>
@@ -194,7 +194,7 @@
                 <Property name="text" type="java.lang.String" value="Game Mode :"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="Btn_TwoPlayer">
+            <Component class="javax.swing.JButton" name="btnTwoPlayer">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Resources/Two_Player.jpg"/>
@@ -206,10 +206,10 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Btn_TwoPlayerActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTwoPlayerActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="Btn_SinglePlayer">
+            <Component class="javax.swing.JButton" name="btnSinglePlayer">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Resources/Single_Player.jpg"/>
@@ -221,7 +221,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Btn_SinglePlayerActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSinglePlayerActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnNetworkGame">
@@ -283,9 +283,9 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="L_Player2_winTimes" alignment="0" max="32767" attributes="0"/>
-                          <Component id="L_Player1_winTimes" alignment="0" max="32767" attributes="0"/>
-                          <Component id="L_Drow_times" min="-2" pref="51" max="-2" attributes="0"/>
+                          <Component id="lblPlayer2wins" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lblPlayer1wins" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lblTies" min="-2" pref="51" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="81" max="32767" attributes="0"/>
                   </Group>
@@ -306,17 +306,17 @@
                       <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="L_Player1_winTimes" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblPlayer1wins" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="L_Player2_winTimes" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblPlayer2wins" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                          <Component id="L_Drow_times" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblTies" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="157" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -351,6 +351,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Player 1 Win :"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel5">
               <Properties>
@@ -359,8 +362,11 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Player 2 Win :"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+              </AuxValues>
             </Component>
-            <Component class="javax.swing.JLabel" name="L_Player1_winTimes">
+            <Component class="javax.swing.JLabel" name="lblPlayer1wins">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="1"/>
@@ -373,8 +379,11 @@
                   </Border>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+              </AuxValues>
             </Component>
-            <Component class="javax.swing.JLabel" name="L_Player2_winTimes">
+            <Component class="javax.swing.JLabel" name="lblPlayer2wins">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="1"/>
@@ -387,6 +396,9 @@
                   </Border>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel8">
               <Properties>
@@ -396,7 +408,7 @@
                 <Property name="text" type="java.lang.String" value="Drow times  :"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="L_Drow_times">
+            <Component class="javax.swing.JLabel" name="lblTies">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="1"/>
@@ -409,6 +421,9 @@
                   </Border>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnNextRound">
               <Properties>
@@ -464,6 +479,13 @@
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <Group type="103" rootIndex="3" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="pnlNetwork" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -485,6 +507,13 @@
                       <Component id="pnlSelectPlayer" max="32767" attributes="0"/>
                   </Group>
               </Group>
+              <Group type="103" rootIndex="3" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="pnlNetwork" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -503,58 +532,85 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jLabel6" max="32767" attributes="0"/>
-                                  <Component id="jLabel7" max="32767" attributes="0"/>
+                                  <Component id="jLabel10" alignment="0" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="chkBoxSavePlayer1" min="-2" max="-2" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <Component id="txtPlayer1Name" min="-2" pref="133" max="-2" attributes="0"/>
+                                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              <Component id="btnSelectPlayer1" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
                               </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="txtPlayer1Name" pref="133" max="32767" attributes="0"/>
-                                  <Component id="txtPlayer2Name" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="btnSelectPlayer1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnSelectPlayer2" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <EmptySpace pref="34" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="rBtnHard" min="-2" max="-2" attributes="0"/>
+                                              <Component id="rBtnNormal" min="-2" max="-2" attributes="0"/>
+                                              <Component id="rBtnEasy" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Component id="lblDifficulty" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="btnStartGame" min="-2" pref="132" max="-2" attributes="0"/>
                               </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="18" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel7" min="-2" pref="76" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="txtPlayer2Name" max="32767" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="btnSelectPlayer2" min="-2" pref="103" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="lblDifficulty" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkBoxSavePlayer2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="97" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="rBtnHard" min="-2" max="-2" attributes="0"/>
-                          <Component id="rBtnNormal" min="-2" max="-2" attributes="0"/>
-                          <Component id="rBtnEasy" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnStartGame" min="-2" pref="132" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="141" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                      <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel6" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
                           <Component id="btnSelectPlayer1" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtPlayer1Name" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="chkBoxSavePlayer1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel7" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
                           <Component id="txtPlayer2Name" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
                           <Component id="btnSelectPlayer2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                      <Component id="chkBoxSavePlayer2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="lblDifficulty" min="-2" pref="23" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="rBtnEasy" min="-2" max="-2" attributes="0"/>
@@ -562,9 +618,9 @@
                       <Component id="rBtnNormal" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="rBtnHard" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
+                      <EmptySpace pref="30" max="32767" attributes="0"/>
                       <Component id="btnStartGame" min="-2" pref="32" max="-2" attributes="0"/>
-                      <EmptySpace pref="62" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -624,19 +680,23 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtPlayer1Name">
               <Properties>
-                <Property name="editable" type="boolean" value="false"/>
-                <Property name="text" type="java.lang.String" value="Player1"/>
+                <Property name="text" type="java.lang.String" value="NewPlayer1"/>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPlayer1NameKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="txtPlayer2Name">
               <Properties>
-                <Property name="editable" type="boolean" value="false"/>
-                <Property name="text" type="java.lang.String" value="player2"/>
+                <Property name="text" type="java.lang.String" value="NewPlayer2"/>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPlayer2NameKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnSelectPlayer1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Select Player 1"/>
+                <Property name="text" type="java.lang.String" value="Select from List"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelectPlayer1ActionPerformed"/>
@@ -644,7 +704,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnSelectPlayer2">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Select Player 2"/>
+                <Property name="text" type="java.lang.String" value="Select from list"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelectPlayer2ActionPerformed"/>
@@ -656,6 +716,29 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnStartGameActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel10">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Enter name or press the button to select from already saved players"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="chkBoxSavePlayer2">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Add me to players list and save my statistics"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkBoxSavePlayer2ActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="chkBoxSavePlayer1">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Add me to players list and save my statistics"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkBoxSavePlayer1ActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -680,32 +763,15 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                      <Component id="lblBoard" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="34" max="32767" attributes="0"/>
-                  </Group>
+                  <EmptySpace min="0" pref="362" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblBoard" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="79" max="32767" attributes="0"/>
-                  </Group>
+                  <EmptySpace min="0" pref="390" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
-          <SubComponents>
-            <Component class="javax.swing.JLabel" name="lblBoard">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Resources/background.jpg"/>
-                </Property>
-              </Properties>
-            </Component>
-          </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="pnlSelectPlayer">
           <Properties>
@@ -725,36 +791,25 @@
                               <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
                               <Component id="lblSelectPlayerHeader" min="-2" pref="154" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtSearchPlayer" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="btnBack" min="-2" pref="101" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Component id="btnOK" min="-2" pref="97" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Component id="jScrollPane1" min="-2" pref="249" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="btnBack" min="-2" pref="101" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="btnOK" min="-2" pref="97" max="-2" attributes="0"/>
                                   </Group>
+                                  <Component id="jScrollPane1" min="-2" pref="249" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtNewPlayer" min="-2" pref="167" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="txtPlayerFromList" min="-2" pref="166" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="52" max="32767" attributes="0"/>
+                      <EmptySpace pref="69" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -765,24 +820,17 @@
                       <Component id="lblSelectPlayerHeader" min="-2" pref="29" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel1" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
-                          <Component id="txtNewPlayer" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel9" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                          <Component id="txtSearchPlayer" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtPlayerFromList" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="182" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="232" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="btnBack" max="32767" attributes="0"/>
                           <Component id="btnOK" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="17" max="32767" attributes="0"/>
+                      <EmptySpace pref="19" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -795,19 +843,6 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="text" type="java.lang.String" value="Select Player"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel1">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="New Player :"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtNewPlayer">
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox1">
-              <Properties>
-                <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Add me to players list and save my statistics"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel9">
@@ -824,10 +859,11 @@
               <SubComponents>
                 <Component class="javax.swing.JList" name="lstPlayers">
                   <Properties>
-                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="0"/>
-                    </Property>
+                    <Property name="selectionMode" type="int" value="0"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lstPlayersMouseClicked"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -853,9 +889,188 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBackActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtSearchPlayer">
+            <Component class="javax.swing.JTextField" name="txtPlayerFromList">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Type to search..."/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="txtPlayerFromListMouseClicked"/>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPlayerFromListKeyReleased"/>
+              </Events>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="pnlNetwork">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
+            </Property>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel11" min="-2" pref="65" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                                      <Component id="jLabel12" min="-2" pref="42" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="txtIPJoin" pref="162" max="32767" attributes="0"/>
+                                  <Component id="txtPort" alignment="1" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="btnJoinGame" min="-2" pref="85" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="btnHostGame" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblNetworkStatus" alignment="0" min="-2" pref="313" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="12" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="133" max="-2" attributes="0"/>
+                      <Component id="jButton1" min="-2" pref="108" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblPortHost" min="-2" pref="106" max="-2" attributes="0"/>
+                          <Component id="lblWaiting" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                      <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnHostGame" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="lblNetworkStatus" min="-2" pref="18" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblPortHost" min="-2" pref="17" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWaiting" min="-2" pref="22" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                      <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="txtIPJoin" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="txtPort" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="btnJoinGame" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="63" max="32767" attributes="0"/>
+                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JButton" name="btnHostGame">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Host Game"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHostGameActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel11">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="IP Address :"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="txtIPJoin">
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel12">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="4"/>
+                <Property name="text" type="java.lang.String" value="Port :"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="txtPort">
+            </Component>
+            <Component class="javax.swing.JButton" name="btnJoinGame">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Join Game"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnJoinGameActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel13">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Click Host Game button to create a server."/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel14">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Or enter following details from a host and click Join Game button"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel15">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="to join a server."/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblNetworkStatus">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="12" style="1"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblPortHost">
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Start Game"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblWaiting">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Waiting for another player..."/>
               </Properties>
             </Component>
           </SubComponents>

@@ -2,6 +2,7 @@
 package gui;
 
 import Tic_Tac_Toe_Game.Player;
+import io.DBHandler;
 import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -10,11 +11,7 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 public class Board extends Canvas implements MouseListener{
@@ -27,12 +24,14 @@ public class Board extends Canvas implements MouseListener{
     private int turn = 0;
     private boolean win,draw;
     private GameFrame game;
+    private DBHandler dbHandler;
     
-    public Board(GameFrame game,Player player1, Player player2){
+    public Board(GameFrame game,Player player1, Player player2,DBHandler dbHandler){
         moves = new String[]{"","","","","","","","",""};
         player = new Player[]{player1,player2};
         win = false; draw = false;
         this.game = game;
+        this.dbHandler = dbHandler;
         this.setIgnoreRepaint(true);
     }
     
