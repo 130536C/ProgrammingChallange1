@@ -12,6 +12,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 public class Board extends Canvas implements MouseListener{
@@ -48,7 +50,7 @@ public class Board extends Canvas implements MouseListener{
         g.dispose();
     }
     
-    public void drawX(){
+    private void drawX(){
         for (int i=20;i<=80;i++){
             int j = i;
             Graphics2D g = (Graphics2D) this.getGraphics();
@@ -82,13 +84,78 @@ public class Board extends Canvas implements MouseListener{
         }
     }
     
-    public void drawO(){
-            Graphics2D g = (Graphics2D) this.getGraphics();
-            g.setColor(Color.BLUE);
-            g.setStroke(new BasicStroke(3));
-            g.drawOval(boundryX+20,boundryY+20 , 60, 60);
-            Toolkit.getDefaultToolkit().sync();
-            g.dispose();
+    private void drawO(){
+        Graphics2D g = (Graphics2D) this.getGraphics();
+        g.setColor(Color.BLUE);
+        g.setStroke(new BasicStroke(3));
+        g.drawOval(boundryX+20,boundryY+20 , 60, 60);
+        Toolkit.getDefaultToolkit().sync();
+        g.dispose();
+    }
+    
+    private void drawAlignment(int alignment){
+        System.out.println(alignment);
+        if (alignment < 3){
+            int x = 50,boundryX = 100*alignment;
+            for (int y = 10; y < 290; y++){
+                Graphics2D g = (Graphics2D) this.getGraphics();
+                g.setColor(Color.RED);
+                g.fillOval(x+boundryX, y, 5, 5);
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Toolkit.getDefaultToolkit().sync();
+                g.dispose();
+            }
+        }
+        else if (alignment < 6){
+            alignment -= 3;
+            int y = 50,boundryY = 100*alignment;
+            for (int x = 10; x < 290; x++){
+                Graphics2D g = (Graphics2D) this.getGraphics();
+                g.setColor(Color.RED);
+                g.fillOval(x, y+boundryY, 5, 5);
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Toolkit.getDefaultToolkit().sync();
+                g.dispose();
+            }
+        }
+        else if (alignment == 6){
+            for (int x = 10; x < 290; x++){
+                int y = x;
+                Graphics2D g = (Graphics2D) this.getGraphics();
+                g.setColor(Color.RED);
+                g.fillOval(x-2, y, 5, 5);
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Toolkit.getDefaultToolkit().sync();
+                g.dispose();
+            }
+        }
+        else{
+            for (int x = 290; x >= 10; x--){
+                int y = 300-x;
+                Graphics2D g = (Graphics2D) this.getGraphics();
+                g.setColor(Color.RED);
+                g.fillOval(x-2, y, 5, 5);
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Toolkit.getDefaultToolkit().sync();
+                g.dispose();
+            }
+        }
     }
     
     private void setPosition(int x, int y) {
@@ -153,9 +220,11 @@ public class Board extends Canvas implements MouseListener{
                 if (!player[currentPlayer].getName().equals("Computer")){
                     player[currentPlayer].play(moves, player[1-currentPlayer], position);
                 }
-                if (Player.isWin(player[currentPlayer].getAlignments())){
+                int alignment = Player.isWin(player[currentPlayer].getAlignments());
+                if (alignment!=-1){
                     win = true;
                     game.lblStatus.setText(player[currentPlayer].getName()+" wins!");
+                    drawAlignment(alignment);
                     game.btnNextRound.setEnabled(true);
                     return;
                 }

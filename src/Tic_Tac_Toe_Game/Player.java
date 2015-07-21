@@ -33,11 +33,11 @@ public abstract class Player {
     
     public abstract int play(String[] board,Player opponent,int turn);
     
-    public static boolean isWin(int[] alignments){
-        for (int alignment : alignments){
-            if (alignment==3) return true;
+    public static int isWin(int[] alignments){
+        for (int i=0;i<8;i++){
+            if (alignments[i]==3) return i;
         }
-        return false;
+        return -1;
     }
     
     public void setAlignment(int pos,int add){
