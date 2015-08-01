@@ -40,6 +40,11 @@ public abstract class Player {
         return -1;
     }
     
+    public void resetAllignment(){
+        for (int i=0;i<8;i++)
+            alignments[i] = 0;
+    }
+    
     public void setAlignment(int pos,int add){
         switch(pos){
             case 0:

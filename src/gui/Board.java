@@ -1,6 +1,7 @@
 
 package gui;
 
+import Tic_Tac_Toe_Game.Human;
 import Tic_Tac_Toe_Game.Player;
 import io.DBHandler;
 import java.awt.BasicStroke;
@@ -23,8 +24,8 @@ public class Board extends Canvas implements MouseListener{
     private int boundryY;
     private String[] moves;
     private Player[] player;
-    private int turn = 0;
-    private boolean win,draw;
+    private int turn = 0,currentPlayer;
+    private boolean win,draw,myTurn;
     private GameFrame game;
     private DBHandler dbHandler;
     
@@ -203,7 +204,7 @@ public class Board extends Canvas implements MouseListener{
     @Override
     public void mouseClicked(MouseEvent e) {
         if (!win && !draw){
-            int currentPlayer = turn%2;
+            currentPlayer = turn%2;
             if (!player[currentPlayer].getName().equals("Computer")){
                 setPosition(e.getX(),e.getY());
             }
@@ -226,12 +227,20 @@ public class Board extends Canvas implements MouseListener{
                     game.lblStatus.setText(player[currentPlayer].getName()+" wins!");
                     drawAlignment(alignment);
                     game.btnNextRound.setEnabled(true);
+                    if (currentPlayer==0){
+                        game.player1winStat++;
+                    }else{
+                        game.player2WinStat++;
+                    }
+                    updateStats();
                     return;
                 }
                 if (turn==8){
                     draw = true;
                     game.lblStatus.setText("Game draw!");
                     game.btnNextRound.setEnabled(true);
+                    game.tieStat++;
+                    updateStats();
                     return;
                 }
                 turn++;
@@ -256,4 +265,55 @@ public class Board extends Canvas implements MouseListener{
     @Override
     public void mouseExited(MouseEvent e) {}
 
+    private void updateStats() {
+        switch(game.gameMode){
+            case 2:
+                Human temp1 = (Human) player[currentPlayer];
+                Human temp2 = (Human) player[1 - currentPlayer];
+                if (win) {
+                    
+                        temp1.setWins(temp1.getWins() + 1);
+                        temp2.setLoses(temp2.getLoses() + 1);
+                } else {
+                    temp1.setTies(temp1.getTies() + 1);
+                    temp2.setTies(temp2.getTies() + 1);
+                }
+                new Thread() {
+                    public void run() {
+                        dbHandler.updatePlayer(temp1);
+                    }
+                }.start();
+                new Thread() {
+                    public void run() {
+                        dbHandler.updatePlayer(temp2);
+                    }
+                }.start();
+                break;
+            case 1:
+                Human temp;
+                if (player[currentPlayer].getName().equals("Computer")){
+                    temp = (Human) player[1-currentPlayer];
+                    if (win){
+                        temp.setLoses(temp.getLoses()+1);
+                    }
+                }else{
+                    temp = (Human) player[currentPlayer];
+                    if (win){
+                        temp.setWins(temp.getWins()+1);
+                    }
+                }
+                if (draw){
+                    temp.setTies(temp.getTies()+1);
+                }
+                new Thread() {
+                    public void run() {
+                        dbHandler.updatePlayer(temp);
+                    }
+                }.start();
+                break;
+            case 0:
+                break;
+        }
+    }        
+    
 }

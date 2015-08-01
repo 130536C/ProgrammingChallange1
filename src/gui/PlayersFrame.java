@@ -12,19 +12,22 @@ public class PlayersFrame extends javax.swing.JFrame {
     private DBHandler dbHandler;
     private PlayerTableModel tablemodel;
     
-    /**
-     * Creates new form PlayersFrame
-     */
     public PlayersFrame() {
         initComponents();
     }
 
-    PlayersFrame(GameFrame game,DBHandler dbHandler) {
+    PlayersFrame(GameFrame game,DBHandler dbHandler,boolean overall) {
         this();
         this.game = game;
         this.dbHandler = dbHandler;
+        dbHandler.refresh();
         tablemodel = new PlayerTableModel(dbHandler.getPlayers());
         tblPlayers.setModel(tablemodel);
+        txtSearch.setText("Type to search...");
+        txtSearch.setVisible(!overall);
+        btnDeleteAll.setVisible(!overall);
+        btnDeletePlayer.setVisible(!overall);
+        tblPlayers.requestFocus();
     }
 
     /**
@@ -37,7 +40,7 @@ public class PlayersFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         txtSearch = new javax.swing.JTextField();
-        btnSearch = new javax.swing.JButton();
+        btnDeleteAll = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPlayers = new javax.swing.JTable();
         btnDeletePlayer = new javax.swing.JButton();
@@ -50,10 +53,22 @@ public class PlayersFrame extends javax.swing.JFrame {
             }
         });
 
-        btnSearch.setText("Search");
-        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+        txtSearch.setText("Type to search...");
+        txtSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtSearchMouseClicked(evt);
+            }
+        });
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
+
+        btnDeleteAll.setText("Delete All Players");
+        btnDeleteAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchActionPerformed(evt);
+                btnDeleteAllActionPerformed(evt);
             }
         });
 
@@ -71,7 +86,7 @@ public class PlayersFrame extends javax.swing.JFrame {
         tblPlayers.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tblPlayers);
 
-        btnDeletePlayer.setText("Delete Player");
+        btnDeletePlayer.setText("Delete Selected Player");
         btnDeletePlayer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeletePlayerActionPerformed(evt);
@@ -82,16 +97,16 @@ public class PlayersFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSearch)
                         .addGap(28, 28, 28)
-                        .addComponent(btnDeletePlayer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(btnDeletePlayer)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addComponent(btnDeleteAll)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -100,7 +115,7 @@ public class PlayersFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch)
+                    .addComponent(btnDeleteAll)
                     .addComponent(btnDeletePlayer))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -115,27 +130,30 @@ public class PlayersFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSearchActionPerformed
+    private void btnDeleteAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteAllActionPerformed
+        int response = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete All players?", "Delete All Players", JOptionPane.YES_NO_OPTION);
+            if (response == JOptionPane.YES_OPTION){
+                new Thread(){
+                    public void run() {
+                        dbHandler.deletePlayer("");
+                        dbHandler.refresh();
+                        tablemodel.setPlayers(dbHandler.getPlayers());
+                    }
+                }.start();
+            }
+    }//GEN-LAST:event_btnDeleteAllActionPerformed
 
     private void btnDeletePlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletePlayerActionPerformed
         if (tblPlayers.getSelectedRow()>=0){
             int response = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this player?", "Delete Player", JOptionPane.YES_NO_OPTION);
             if (response == JOptionPane.YES_OPTION){
-                /*new Thread(){
-                    public void run(){
+                new Thread(){
+                    public void run() {
                         dbHandler.deletePlayer((String) tblPlayers.getValueAt(tblPlayers.getSelectedRow(), 0));
+                        dbHandler.refresh();
                         tablemodel.setPlayers(dbHandler.getPlayers());
-                        tablemodel.fireTableRowsDeleted(0, tablemodel.players.size());
                     }
-                }.start();*/
-                dbHandler.deletePlayer((String) tblPlayers.getValueAt(tblPlayers.getSelectedRow(), 0));
-                //tablemodel.setPlayers(dbHandler.getPlayers());
-                /*tablemodel = new PlayerTableModel(dbHandler.getPlayers());
-        tblPlayers.setModel(tablemodel);*/
-                tablemodel.fireTableStructureChanged();
-                tblPlayers.repaint();
+                }.start();
             }
         }
         else{
@@ -143,9 +161,31 @@ public class PlayersFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDeletePlayerActionPerformed
 
+    private void txtSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchMouseClicked
+        if (txtSearch.getText().equals("Type to search...")){
+            txtSearch.setText("");
+        }
+    }//GEN-LAST:event_txtSearchMouseClicked
+
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        tablemodel.setSelectedPlayerList(txtSearch.getText());
+    }//GEN-LAST:event_txtSearchKeyReleased
+
     public void setUp(){
         dbHandler.refresh();
         tablemodel.setPlayers(dbHandler.getPlayers());
+    }
+    
+    public void setUp(Human player1, Human player2){
+        //dbHandler.refresh();
+        ArrayList<Human> players = new ArrayList<Human>();
+        if (player1!=null){
+            players.add(player1);
+        }
+        if (player2!=null){
+            players.add(player2);
+        }
+        tablemodel.setPlayers(players);
     }
     
     /**
@@ -161,8 +201,8 @@ public class PlayersFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDeleteAll;
     private javax.swing.JButton btnDeletePlayer;
-    private javax.swing.JButton btnSearch;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblPlayers;
     private javax.swing.JTextField txtSearch;

@@ -8,15 +8,17 @@ import javax.swing.table.AbstractTableModel;
 public class PlayerTableModel extends AbstractTableModel{
     
     private final String[] COLUMN_NAMES = new String[]{"Name","Wins","Loses","Ties"};
-    ArrayList<Human> players;
+    ArrayList<Human> completePlayersList;
+    ArrayList<Human> selectedPlayersList;
     
     public PlayerTableModel(ArrayList<Human> players){
-        this.players = players;
+        this.completePlayersList = players;
+        selectedPlayersList = completePlayersList;
     }
 
     @Override
     public int getRowCount() {
-        return players.size();
+        return selectedPlayersList.size();
     }
 
     @Override
@@ -28,13 +30,13 @@ public class PlayerTableModel extends AbstractTableModel{
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch(columnIndex){
             case 0:
-                return players.get(rowIndex).getName();
+                return selectedPlayersList.get(rowIndex).getName();
             case 1:
-                return players.get(rowIndex).getWins();
+                return selectedPlayersList.get(rowIndex).getWins();
             case 2:
-                return players.get(rowIndex).getLoses();
+                return selectedPlayersList.get(rowIndex).getLoses();
             case 3:
-                return players.get(rowIndex).getTies();
+                return selectedPlayersList.get(rowIndex).getTies();
         }
         return null;
     }
@@ -45,19 +47,7 @@ public class PlayerTableModel extends AbstractTableModel{
     }
     
     @Override
-    public void setValueAt(Object anObject, int row, int column){
-        switch(column){
-            case 0:
-                players.get(row).setName(anObject.toString());
-            case 1:
-                players.get(row).setWins(Integer.parseInt(anObject.toString()));
-            case 2:
-                players.get(row).setLoses(Integer.parseInt(anObject.toString()));
-            case 3:
-                players.get(row).setTies(Integer.parseInt(anObject.toString()));
-        }
-        fireTableCellUpdated(row, column);
-    }
+    public void setValueAt(Object anObject, int row, int column){}
     
     @Override
     public boolean isCellEditable(int row, int column){
@@ -65,12 +55,26 @@ public class PlayerTableModel extends AbstractTableModel{
     }
     
     public void setPlayers(ArrayList<Human> players){
-        this.players = players;
+        this.completePlayersList = players;
+        selectedPlayersList = completePlayersList;
         fireTableStructureChanged();
     }
     
     public ArrayList<Human> getPlayers() {
-        return players;
+        return selectedPlayersList;
+    }
+    
+    public void setSelectedPlayerList(String key){
+        if(key.equals(""))
+            selectedPlayersList = completePlayersList;
+        else{
+            selectedPlayersList = new ArrayList<Human>();
+            for (Human human : completePlayersList){
+                if (human.getName().toLowerCase().contains(key.toLowerCase()))
+                    selectedPlayersList.add(human);
+            }
+        }
+        fireTableStructureChanged();
     }
     
 }

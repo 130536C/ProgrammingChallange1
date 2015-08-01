@@ -1,4 +1,3 @@
-
 package gui;
 
 import Tic_Tac_Toe_Game.Computer;
@@ -10,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -19,11 +17,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+public class GameFrame extends javax.swing.JFrame {
 
-public class GameFrame extends javax.swing.JFrame{
-    
     private Board board;
-    private Player player1,player2;
+    private Player player1, player2;
     protected int difficulity;
     protected int gameMode;      // 0 for network game, 1 for single player, 2 for 2 player
     private ServerSocket server;
@@ -31,12 +28,17 @@ public class GameFrame extends javax.swing.JFrame{
     boolean accepted = false;
     private DBHandler dbHandler;
     private PlayerListModel playerList;
-    private boolean savePlayer1,savePlayer2;
-    private boolean player1Selected,player2Selected;
-    
+    private boolean savePlayer1, savePlayer2;
+    private boolean player1Selected, player2Selected;
+    private boolean newGame;
+    protected int player1winStat, player2WinStat, tieStat;
+
     public GameFrame() {
         this.difficulity = 3;
-        this.savePlayer1 = true; this.savePlayer2 = true;
+        this.savePlayer1 = true;
+        this.savePlayer2 = true;
+        this.newGame = true;
+        player1winStat = 0; player2WinStat = 0; tieStat = 0;
         dbHandler = DBHandler.getInstance();
         dbHandler.refresh();
         try {
@@ -57,9 +59,9 @@ public class GameFrame extends javax.swing.JFrame{
         lstPlayers.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if (lblSelectPlayerHeader.getText().endsWith("1")){
+                if (lblSelectPlayerHeader.getText().endsWith("1")) {
                     player1Selected = true;
-                }else{
+                } else {
                     player2Selected = true;
                 }
                 txtPlayerFromList.setText((String) lstPlayers.getSelectedValue());
@@ -70,9 +72,8 @@ public class GameFrame extends javax.swing.JFrame{
         pnlBoard.setVisible(false);
         pnlSettings.setVisible(false);
         pnlNetwork.setVisible(false);
-        
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -90,14 +91,16 @@ public class GameFrame extends javax.swing.JFrame{
         btnExit = new javax.swing.JButton();
         pnlScore = new javax.swing.JPanel();
         lblStatus = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        lblPlayer1wins = new javax.swing.JLabel();
-        lblPlayer2wins = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        lblPlayer1Win = new javax.swing.JLabel();
+        lblPlayer2Wins = new javax.swing.JLabel();
+        lblPlayer1Stat = new javax.swing.JLabel();
+        lblPlayer2Stat = new javax.swing.JLabel();
         lblTies = new javax.swing.JLabel();
+        lblTiesStat = new javax.swing.JLabel();
         btnNextRound = new javax.swing.JButton();
         btnMainMenu = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        btnOverallStats = new javax.swing.JButton();
         pnlRight = new javax.swing.JPanel();
         pnlSettings = new javax.swing.JPanel();
         lblDifficulty = new javax.swing.JLabel();
@@ -258,29 +261,32 @@ public class GameFrame extends javax.swing.JFrame{
         lblStatus.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblStatus.setText("Player1 turn - X");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setText("Player 1 Win :");
+        lblPlayer1Win.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblPlayer1Win.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblPlayer1Win.setText("Player 1 Win :");
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setText("Player 2 Win :");
+        lblPlayer2Wins.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblPlayer2Wins.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblPlayer2Wins.setText("Player 2 Win :");
 
-        lblPlayer1wins.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblPlayer1wins.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblPlayer1wins.setText("     ");
-        lblPlayer1wins.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblPlayer1Stat.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblPlayer1Stat.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblPlayer1Stat.setText("0");
+        lblPlayer1Stat.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        lblPlayer2wins.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblPlayer2wins.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblPlayer2wins.setText("    ");
-        lblPlayer2wins.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel8.setText("Drow times  :");
+        lblPlayer2Stat.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblPlayer2Stat.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblPlayer2Stat.setText("0");
+        lblPlayer2Stat.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lblTies.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblTies.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTies.setText("  ");
-        lblTies.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblTies.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTies.setText("Ties :");
+
+        lblTiesStat.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblTiesStat.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTiesStat.setText("0");
+        lblTiesStat.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btnNextRound.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnNextRound.setText("Next Round");
@@ -299,48 +305,69 @@ public class GameFrame extends javax.swing.JFrame{
             }
         });
 
+        jLabel1.setText("Statistics for this session:");
+
+        btnOverallStats.setText("View Overall Statistics");
+        btnOverallStats.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOverallStatsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlScoreLayout = new javax.swing.GroupLayout(pnlScore);
         pnlScore.setLayout(pnlScoreLayout);
         pnlScoreLayout.setHorizontalGroup(
             pnlScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlScoreLayout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addGroup(pnlScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel8))
-                .addGap(18, 18, 18)
-                .addGroup(pnlScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(lblPlayer2wins, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblPlayer1wins, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblTies, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(81, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlScoreLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(btnMainMenu)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(btnNextRound)
                 .addGap(31, 31, 31))
+            .addGroup(pnlScoreLayout.createSequentialGroup()
+                .addGroup(pnlScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlScoreLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(pnlScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblPlayer1Win, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblPlayer2Wins, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTies, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lblPlayer2Stat, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblPlayer1Stat, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTiesStat, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(pnlScoreLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1))
+                    .addGroup(pnlScoreLayout.createSequentialGroup()
+                        .addGap(68, 68, 68)
+                        .addComponent(btnOverallStats)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlScoreLayout.setVerticalGroup(
             pnlScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlScoreLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addGroup(pnlScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(lblPlayer1wins))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(lblPlayer2wins))
+                .addGap(26, 26, 26)
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(lblTies))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
+                .addGroup(pnlScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPlayer1Win)
+                    .addComponent(lblPlayer1Stat))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPlayer2Wins)
+                    .addComponent(lblPlayer2Stat))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTies)
+                    .addComponent(lblTiesStat))
+                .addGap(32, 32, 32)
+                .addComponent(btnOverallStats, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                 .addGroup(pnlScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNextRound)
                     .addComponent(btnMainMenu))
@@ -846,7 +873,7 @@ public class GameFrame extends javax.swing.JFrame{
         rBtnEasy.setVisible(false);
         rBtnNormal.setVisible(false);
         rBtnHard.setVisible(false);
-        pnlSettings.setVisible(true);    
+        pnlSettings.setVisible(true);
         txtPlayer1Name.setText("NewPlayer1");
         txtPlayer2Name.setText("NewPlayer2");
         txtPlayer2Name.setEditable(true);
@@ -856,9 +883,19 @@ public class GameFrame extends javax.swing.JFrame{
     }//GEN-LAST:event_btnTwoPlayerActionPerformed
 
     private void btnNextRoundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextRoundActionPerformed
-        String temp = txtPlayer1Name.getText();
-        txtPlayer1Name.setText(txtPlayer2Name.getText());
-        txtPlayer2Name.setText(temp);
+        Player temp = player1;          // swap players
+        player1 = player2;
+        player2 = temp;
+        player1.resetAllignment();
+        player1.setSymbol("X");
+        player2.resetAllignment();
+        player2.setSymbol("O");
+        boolean tempSave = savePlayer1;     // savePlayer1, savePlayer2 are swapped because they are cheked to load players for overall stats
+        savePlayer1 = savePlayer2;
+        savePlayer2 = tempSave;
+        int tempVal = player1winStat;
+        player1winStat = player2WinStat;
+        player2WinStat = tempVal;
         btnStartGameActionPerformed(null);
         btnNextRound.setEnabled(false);
     }//GEN-LAST:event_btnNextRoundActionPerformed
@@ -881,7 +918,7 @@ public class GameFrame extends javax.swing.JFrame{
 
     private void btnStatisticsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStatisticsActionPerformed
         this.setEnabled(false);
-        PlayersFrame pf = new PlayersFrame(this,dbHandler);
+        PlayersFrame pf = new PlayersFrame(this, dbHandler, false);
         pf.setUp();
         pf.setLocationRelativeTo(null);
         pf.setResizable(false);
@@ -890,7 +927,7 @@ public class GameFrame extends javax.swing.JFrame{
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         int response = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Game", JOptionPane.YES_NO_OPTION);
-        if (response == JOptionPane.YES_OPTION){
+        if (response == JOptionPane.YES_OPTION) {
             System.exit(0);
         }
     }//GEN-LAST:event_btnExitActionPerformed
@@ -909,15 +946,15 @@ public class GameFrame extends javax.swing.JFrame{
     }//GEN-LAST:event_btnSelectPlayer1ActionPerformed
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        if (lblSelectPlayerHeader.getText().endsWith("1")){
-            if (!player1Selected ){
+        if (lblSelectPlayerHeader.getText().endsWith("1")) {
+            if (!player1Selected) {
                 JOptionPane.showMessageDialog(this, "No player selected. Please select a player", "Invalid Name", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             txtPlayer1Name.setText(txtPlayerFromList.getText());
             chkBoxSavePlayer1.setVisible(false);
-        }else{
-            if (!player2Selected ){
+        } else {
+            if (!player2Selected) {
                 JOptionPane.showMessageDialog(this, "No player selected. Please select a player", "Invalid Name", JOptionPane.WARNING_MESSAGE);
                 return;
             }
@@ -930,10 +967,10 @@ public class GameFrame extends javax.swing.JFrame{
     }//GEN-LAST:event_btnOKActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        if (player1Selected){
+        if (player1Selected) {
             chkBoxSavePlayer1.setVisible(false);
             chkBoxSavePlayer2.setVisible(false);
-        }else{
+        } else {
             chkBoxSavePlayer1.setVisible(true);
             chkBoxSavePlayer2.setVisible(true);
         }
@@ -943,74 +980,72 @@ public class GameFrame extends javax.swing.JFrame{
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnStartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartGameActionPerformed
-        if (!isValidName()){
-            return;
-        }
-        if (gameMode==1){
-            if (txtPlayer2Name.getText().equals("Computer")){
-                player2 = new Computer(txtPlayer2Name.getText(), "O",difficulity);
-                if (player1Selected){
+        if (newGame) {
+            if (!isValidName()) {
+                return;
+            }
+            if (gameMode == 1) {
+                if (player1Selected) {
                     player1 = dbHandler.getPlayerByName(txtPlayer1Name.getText());
                     player1.setSymbol("X");
-                }else{
-                    player1 = new Human(txtPlayer1Name.getText(),"X");
+                } else {
+                    player1 = new Human(txtPlayer1Name.getText(), "X");
                 }
-            }else{
-                player1 = new Computer(txtPlayer1Name.getText(), "X",difficulity);
-                if (player2Selected){
+                player2 = new Computer(txtPlayer2Name.getText(), "O", difficulity);
+            } else if (gameMode == 2) {
+                if (player1Selected) {
+                    player1 = dbHandler.getPlayerByName(txtPlayer1Name.getText());
+                    player1.setSymbol("X");
+                } else {
+                    player1 = new Human(txtPlayer1Name.getText(), "X");
+                }
+                if (player2Selected) {
                     player2 = dbHandler.getPlayerByName(txtPlayer2Name.getText());
                     player2.setSymbol("O");
-                }else{
-                    player2 = new Human(txtPlayer2Name.getText(),"O");
+                } else {
+                    player2 = new Human(txtPlayer2Name.getText(), "O");
                 }
-            }            
-        }else{
-            if (player1Selected){
-                player1 = dbHandler.getPlayerByName(txtPlayer1Name.getText());
-                player1.setSymbol("X");
-            }else{
-                player1 = new Human(txtPlayer1Name.getText(),"X");
             }
-            if (player2Selected){
-                player2 = dbHandler.getPlayerByName(txtPlayer2Name.getText());
-                player2.setSymbol("O");
-            }else{
-                player2 = new Human(txtPlayer2Name.getText(),"O");
+            if (savePlayer1) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        dbHandler.addNewPlayer((Human) player1);
+                    }
+                }.start();
             }
+            if (savePlayer2) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        dbHandler.addNewPlayer((Human) player2);
+                    }
+                }.start();
+            }
+            newGame = false;
         }
-        jLabel4.setText(txtPlayer1Name.getText()+" wins :");
-        jLabel5.setText(txtPlayer2Name.getText()+"wins :");
-        //lblPlayer1wins.setText();
-        //lblPlayer2wins.setText(player2.getSymbol());
+        lblPlayer1Stat.setText(Integer.toString(player1winStat));
+        lblPlayer2Stat.setText(Integer.toString(player2WinStat));
+        lblTiesStat.setText(Integer.toString(tieStat));
+        lblPlayer1Win.setText(player1.getName() + " wins :");
+        lblPlayer2Wins.setText(player2.getName() + " wins :");
         pnlBoard.removeAll();
         addBoard();
-        if (savePlayer1){
-            new Thread(){
-                public void run(){
-                    dbHandler.addNewPlayer((Human) player1);
-                }
-            }.start();
-        }
-        if (savePlayer2){
-            new Thread(){
-                public void run(){
-                    dbHandler.addNewPlayer((Human) player2);
-                }
-            }.start();
-        }
-        lblStatus.setText(player1.getName()+"'s turn - X");
+        lblStatus.setText(player1.getName() + "'s turn - X");
         pnlSelectPlayer.setVisible(false);
         pnlSettings.setVisible(false);
         pnlStart.setVisible(false);
         pnlBoard.setVisible(true);
         pnlScore.setVisible(true);
         board.drawBoard();
-        if (player1.getName().equals("Computer")){
+        if (player1.getName().equals("Computer")) {
             board.playComputerFirst();
         }
     }//GEN-LAST:event_btnStartGameActionPerformed
 
     private void btnMainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMainMenuActionPerformed
+        newGame = true;
+        player1winStat = 0; player2WinStat = 0; tieStat = 0;
         pnlBoard.setVisible(false);
         pnlScore.setVisible(false);
         pnlSettings.setVisible(false);
@@ -1034,17 +1069,17 @@ public class GameFrame extends javax.swing.JFrame{
         try {
             server = new ServerSocket(0);
             /*InetAddress ip = server.getInetAddress();
-            System.out.println(ip.toString());*/
+             System.out.println(ip.toString());*/
             lblNetworkStatus.setText("Server started Successfully on following port.");
-            lblPortHost.setText("Port : "+server.getLocalPort());
+            lblPortHost.setText("Port : " + server.getLocalPort());
             System.out.println(server.getLocalPort());
             lblWaiting.setVisible(true);
             btnJoinGame.setEnabled(false);
             txtIPJoin.setEditable(false);
             txtPort.setEditable(false);
             GameFrame gf = this;
-            new Thread(){
-                public void run(){
+            new Thread() {
+                public void run() {
                     try {
                         socket = server.accept();
                         accepted = true;
@@ -1087,7 +1122,7 @@ public class GameFrame extends javax.swing.JFrame{
     }//GEN-LAST:event_txtPlayer2NameKeyTyped
 
     private void txtPlayerFromListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPlayerFromListMouseClicked
-        if (txtPlayerFromList.getText().equals("Type to search...")){
+        if (txtPlayerFromList.getText().equals("Type to search...")) {
             txtPlayerFromList.setText("");
         }
     }//GEN-LAST:event_txtPlayerFromListMouseClicked
@@ -1097,36 +1132,51 @@ public class GameFrame extends javax.swing.JFrame{
     }//GEN-LAST:event_lstPlayersMouseClicked
 
     private void txtPlayerFromListKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPlayerFromListKeyReleased
-        if (evt.getKeyCode()!=KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() != KeyEvent.VK_ENTER) {
             player1Selected = false;
             playerList.setSelectedNames(txtPlayerFromList.getText());
-            System.out.println(evt.getKeyCode());
         }
     }//GEN-LAST:event_txtPlayerFromListKeyReleased
 
-    private boolean isValidName(){
-        if (txtPlayer1Name.getText().equals("") || txtPlayer2Name.getText().equals("")){
+    private void btnOverallStatsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOverallStatsActionPerformed
+        this.setEnabled(false);
+        PlayersFrame pf = new PlayersFrame(this, dbHandler, true);
+        pf.setLocationRelativeTo(null);
+        pf.setResizable(false);
+        Human temp1 = null, temp2 = null;
+        if (savePlayer1 || player1Selected) {
+            temp1 = (Human) player1;
+        }
+        if (savePlayer2 || player2Selected) {
+            temp2 = (Human) player2;
+        }
+        pf.setUp(temp1, temp2);
+        pf.setVisible(true);
+    }//GEN-LAST:event_btnOverallStatsActionPerformed
+
+    private boolean isValidName() {
+        if (txtPlayer1Name.getText().equals("") || txtPlayer2Name.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Player name empty!\nPleas enter a name.", "Invalid Name", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if (savePlayer1 && dbHandler.isAlreadySaved(txtPlayer1Name.getText())){
-            JOptionPane.showMessageDialog(this, "A player already exist with same name.\nTry a different name","Invalid Name",JOptionPane.WARNING_MESSAGE);
+        if (savePlayer1 && dbHandler.isAlreadySaved(txtPlayer1Name.getText())) {
+            JOptionPane.showMessageDialog(this, "A player already exist with same name.\nTry a different name", "Invalid Name", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if (savePlayer2 && dbHandler.isAlreadySaved(txtPlayer2Name.getText())){
-            JOptionPane.showMessageDialog(this, "A player already exist with same name.\nTry a different name","Invalid Name",JOptionPane.WARNING_MESSAGE);
+        if (savePlayer2 && dbHandler.isAlreadySaved(txtPlayer2Name.getText())) {
+            JOptionPane.showMessageDialog(this, "A player already exist with same name.\nTry a different name", "Invalid Name", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         return true;
     }
-     
+
     public static void main(String args[]) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new GameFrame().setVisible(true);
             }
-        });            
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1139,6 +1189,7 @@ public class GameFrame extends javax.swing.JFrame{
     private javax.swing.JButton btnNetworkGame;
     protected javax.swing.JButton btnNextRound;
     private javax.swing.JButton btnOK;
+    private javax.swing.JButton btnOverallStats;
     private javax.swing.JButton btnSelectPlayer1;
     private javax.swing.JButton btnSelectPlayer2;
     private javax.swing.JButton btnSinglePlayer;
@@ -1148,6 +1199,7 @@ public class GameFrame extends javax.swing.JFrame{
     private javax.swing.JCheckBox chkBoxSavePlayer1;
     private javax.swing.JCheckBox chkBoxSavePlayer2;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1156,21 +1208,21 @@ public class GameFrame extends javax.swing.JFrame{
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    protected javax.swing.JLabel jLabel4;
-    protected javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDifficulty;
     private javax.swing.JLabel lblNetworkStatus;
-    protected javax.swing.JLabel lblPlayer1wins;
-    protected javax.swing.JLabel lblPlayer2wins;
+    protected javax.swing.JLabel lblPlayer1Stat;
+    protected javax.swing.JLabel lblPlayer1Win;
+    protected javax.swing.JLabel lblPlayer2Stat;
+    protected javax.swing.JLabel lblPlayer2Wins;
     private javax.swing.JLabel lblPortHost;
     private javax.swing.JLabel lblSelectPlayerHeader;
     protected javax.swing.JLabel lblStatus;
-    protected javax.swing.JLabel lblTies;
+    private javax.swing.JLabel lblTies;
+    protected javax.swing.JLabel lblTiesStat;
     private javax.swing.JLabel lblWaiting;
     private javax.swing.JList lstPlayers;
     private javax.swing.JPanel pnlBoard;
@@ -1193,14 +1245,11 @@ public class GameFrame extends javax.swing.JFrame{
     // End of variables declaration//GEN-END:variables
 
     private void addBoard() {
-        board = new Board(this,player1,player2,dbHandler);
+        board = new Board(this, player1, player2, dbHandler);
         board.setBounds(40, 55, 300, 300);
         pnlBoard.add(board);
         board.addMouseListener(board);
         board.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
-   
-
-    
-}   
+}
