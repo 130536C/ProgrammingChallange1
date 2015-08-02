@@ -168,3 +168,115 @@ Caused by: ERROR X0Y32: Table/View 'PLAYERS' already exists in Schema 'APP'.
 	at org.apache.derby.impl.sql.GenericPreparedStatement.executeStmt(Unknown Source)
 	at org.apache.derby.impl.sql.GenericPreparedStatement.execute(Unknown Source)
 	... 7 more
+2015 Aug 02 23:15:44,993 INFO  [main]: io.DBHandler - Database & Table may already created
+java.sql.SQLException: Table/View 'PLAYERS' already exists in Schema 'APP'.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedStatement.executeStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.executeStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.execute(Unknown Source)
+	at io.DBHandler.<init>(DBHandler.java:38)
+	at io.DBHandler.getInstance(DBHandler.java:82)
+	at gui.GameFrame.<init>(GameFrame.java:43)
+	at Tic_Tac_Toe_Game.Launcher.main(Launcher.java:9)
+Caused by: java.sql.SQLException: Table/View 'PLAYERS' already exists in Schema 'APP'.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	... 13 more
+Caused by: ERROR X0Y32: Table/View 'PLAYERS' already exists in Schema 'APP'.
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.sql.catalog.DataDictionaryImpl.duplicateDescriptorException(Unknown Source)
+	at org.apache.derby.impl.sql.catalog.DataDictionaryImpl.addDescriptor(Unknown Source)
+	at org.apache.derby.impl.sql.execute.CreateTableConstantAction.executeConstantAction(Unknown Source)
+	at org.apache.derby.impl.sql.execute.MiscResultSet.open(Unknown Source)
+	at org.apache.derby.impl.sql.GenericPreparedStatement.executeStmt(Unknown Source)
+	at org.apache.derby.impl.sql.GenericPreparedStatement.execute(Unknown Source)
+	... 7 more
+2015 Aug 02 23:18:37,117 INFO  [main]: io.DBHandler - Database & Table may already created
+java.sql.SQLException: Table/View 'PLAYERS' already exists in Schema 'APP'.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedStatement.executeStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.executeStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.execute(Unknown Source)
+	at io.DBHandler.<init>(DBHandler.java:38)
+	at io.DBHandler.getInstance(DBHandler.java:82)
+	at gui.GameFrame.<init>(GameFrame.java:43)
+	at Tic_Tac_Toe_Game.Launcher.main(Launcher.java:9)
+Caused by: java.sql.SQLException: Table/View 'PLAYERS' already exists in Schema 'APP'.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	... 13 more
+Caused by: ERROR X0Y32: Table/View 'PLAYERS' already exists in Schema 'APP'.
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.sql.catalog.DataDictionaryImpl.duplicateDescriptorException(Unknown Source)
+	at org.apache.derby.impl.sql.catalog.DataDictionaryImpl.addDescriptor(Unknown Source)
+	at org.apache.derby.impl.sql.execute.CreateTableConstantAction.executeConstantAction(Unknown Source)
+	at org.apache.derby.impl.sql.execute.MiscResultSet.open(Unknown Source)
+	at org.apache.derby.impl.sql.GenericPreparedStatement.executeStmt(Unknown Source)
+	at org.apache.derby.impl.sql.GenericPreparedStatement.execute(Unknown Source)
+	... 7 more
+2015 Aug 02 23:22:33,834 INFO  [main]: io.DBHandler - Database & Table may already created
+java.sql.SQLException: Table/View 'PLAYERS' already exists in Schema 'APP'.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedStatement.executeStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.executeStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.execute(Unknown Source)
+	at io.DBHandler.<init>(DBHandler.java:38)
+	at io.DBHandler.getInstance(DBHandler.java:82)
+	at gui.GameFrame.<init>(GameFrame.java:43)
+	at Tic_Tac_Toe_Game.Launcher.main(Launcher.java:9)
+Caused by: java.sql.SQLException: Table/View 'PLAYERS' already exists in Schema 'APP'.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	... 13 more
+Caused by: ERROR X0Y32: Table/View 'PLAYERS' already exists in Schema 'APP'.
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.sql.catalog.DataDictionaryImpl.duplicateDescriptorException(Unknown Source)
+	at org.apache.derby.impl.sql.catalog.DataDictionaryImpl.addDescriptor(Unknown Source)
+	at org.apache.derby.impl.sql.execute.CreateTableConstantAction.executeConstantAction(Unknown Source)
+	at org.apache.derby.impl.sql.execute.MiscResultSet.open(Unknown Source)
+	at org.apache.derby.impl.sql.GenericPreparedStatement.executeStmt(Unknown Source)
+	at org.apache.derby.impl.sql.GenericPreparedStatement.execute(Unknown Source)
+	... 7 more
+2015 Aug 02 23:24:48,343 INFO  [main]: io.DBHandler - Database & Table may already created
+java.sql.SQLException: Table/View 'PLAYERS' already exists in Schema 'APP'.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedStatement.executeStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.executeStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.execute(Unknown Source)
+	at io.DBHandler.<init>(DBHandler.java:38)
+	at io.DBHandler.getInstance(DBHandler.java:82)
+	at gui.GameFrame.<init>(GameFrame.java:41)
+	at Tic_Tac_Toe_Game.Launcher.main(Launcher.java:9)
+Caused by: java.sql.SQLException: Table/View 'PLAYERS' already exists in Schema 'APP'.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	... 13 more
+Caused by: ERROR X0Y32: Table/View 'PLAYERS' already exists in Schema 'APP'.
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.sql.catalog.DataDictionaryImpl.duplicateDescriptorException(Unknown Source)
+	at org.apache.derby.impl.sql.catalog.DataDictionaryImpl.addDescriptor(Unknown Source)
+	at org.apache.derby.impl.sql.execute.CreateTableConstantAction.executeConstantAction(Unknown Source)
+	at org.apache.derby.impl.sql.execute.MiscResultSet.open(Unknown Source)
+	at org.apache.derby.impl.sql.GenericPreparedStatement.executeStmt(Unknown Source)
+	at org.apache.derby.impl.sql.GenericPreparedStatement.execute(Unknown Source)
+	... 7 more

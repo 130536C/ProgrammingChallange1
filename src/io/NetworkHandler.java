@@ -75,12 +75,11 @@ public class NetworkHandler {
         }
     }
     
-    public synchronized int recieveMove(){  // listen until other player send his move over network
+    public synchronized void recieveMove(){  // listen until other player send his move over network
         try {
-            return dataIn.readInt();
+            board.networkPlay(dataIn.readInt());
         } catch (IOException ex) {
             logger.error(ex);
-            return -1;
         }
     }
     

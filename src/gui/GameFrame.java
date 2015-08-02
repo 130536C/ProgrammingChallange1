@@ -7,8 +7,9 @@ import io.DBHandler;
 import io.NetworkHandler;
 import java.awt.Cursor;
 import java.awt.event.KeyEvent;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -62,10 +63,14 @@ public class GameFrame extends javax.swing.JFrame {
             public void valueChanged(ListSelectionEvent e) {
                 /* same panel is shown for select player 1 and player 2. the only difference is the text in the header label
                    of "select player panel". It can be checked by ending with 1 or 2 */
-                if (lblSelectPlayerHeader.getText().endsWith("1")) {    // player 1 is selected
+                if (gameMode==0){
                     player1Selected = true;
-                } else {           // player 2 is selected
-                    player2Selected = true;
+                }else{
+                    if (lblSelectPlayerHeader.getText().endsWith("1")) {    // player 1 is selected
+                        player1Selected = true;
+                    } else {           // player 2 is selected
+                        player2Selected = true;
+                    }
                 }
                 txtPlayerFromList.setText((String) lstPlayers.getSelectedValue());  // get the name from list and set to selected player text
             }
@@ -141,10 +146,10 @@ public class GameFrame extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        lblNetworkStatus = new javax.swing.JLabel();
+        lblIP = new javax.swing.JLabel();
         lblPortHost = new javax.swing.JLabel();
         btnStartNetworkGame = new javax.swing.JButton();
-        lblWaiting = new javax.swing.JLabel();
+        lblNetworkStatus = new javax.swing.JLabel();
         txtNetPlayerName = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         btnNetSelectFromList = new javax.swing.JButton();
@@ -600,6 +605,11 @@ public class GameFrame extends javax.swing.JFrame {
         jLabel9.setText("Select from players list :");
 
         lstPlayers.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        lstPlayers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lstPlayersMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(lstPlayers);
 
         btnOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Ok.png"))); // NOI18N
@@ -683,8 +693,6 @@ public class GameFrame extends javax.swing.JFrame {
 
         jLabel11.setText("IP Address :");
 
-        txtIPJoin.setText("localhost");
-
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("Port :");
 
@@ -701,8 +709,6 @@ public class GameFrame extends javax.swing.JFrame {
 
         jLabel15.setText("to join a server.");
 
-        lblNetworkStatus.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-
         btnStartNetworkGame.setText("Start Game");
         btnStartNetworkGame.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -710,7 +716,8 @@ public class GameFrame extends javax.swing.JFrame {
             }
         });
 
-        lblWaiting.setText("Waiting for another player...");
+        lblNetworkStatus.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNetworkStatus.setText("Server Created Succesfully.Waiting for another player...");
 
         txtNetPlayerName.setText("NewPlayer");
         txtNetPlayerName.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -723,6 +730,11 @@ public class GameFrame extends javax.swing.JFrame {
         jLabel4.setText("Player Name :");
 
         btnNetSelectFromList.setText("Select from List");
+        btnNetSelectFromList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNetSelectFromListActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Enter player name or select a player first.");
 
@@ -738,62 +750,57 @@ public class GameFrame extends javax.swing.JFrame {
         pnlNetworkLayout.setHorizontalGroup(
             pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlNetworkLayout.createSequentialGroup()
-                .addGroup(pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlNetworkLayout.createSequentialGroup()
-                        .addGroup(pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtIPJoin, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlNetworkLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(btnJoinGame, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34))
+            .addGroup(pnlNetworkLayout.createSequentialGroup()
+                .addGroup(pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pnlNetworkLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
                             .addGroup(pnlNetworkLayout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlNetworkLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtIPJoin, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnJoinGame, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34))
+                                .addGroup(pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCheckBox1)
+                                    .addGroup(pnlNetworkLayout.createSequentialGroup()
+                                        .addComponent(txtNetPlayerName, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnNetSelectFromList))))))
+                    .addGroup(pnlNetworkLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13)
+                            .addComponent(btnHostGame)))
+                    .addGroup(pnlNetworkLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel14)
+                            .addComponent(jLabel15)))
+                    .addGroup(pnlNetworkLayout.createSequentialGroup()
+                        .addGap(133, 133, 133)
+                        .addComponent(btnStartNetworkGame, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlNetworkLayout.createSequentialGroup()
                         .addGap(75, 75, 75)
                         .addGroup(pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblPortHost, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblWaiting))
-                        .addGap(48, 48, 48))
+                            .addComponent(lblIP, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(pnlNetworkLayout.createSequentialGroup()
-                        .addGroup(pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlNetworkLayout.createSequentialGroup()
-                                .addGap(133, 133, 133)
-                                .addComponent(btnStartNetworkGame, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlNetworkLayout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addGroup(pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addGroup(pnlNetworkLayout.createSequentialGroup()
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jCheckBox1)
-                                            .addGroup(pnlNetworkLayout.createSequentialGroup()
-                                                .addComponent(txtNetPlayerName, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(btnNetSelectFromList))))))
-                            .addGroup(pnlNetworkLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel13)
-                                    .addComponent(btnHostGame)))
-                            .addGroup(pnlNetworkLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel14)
-                                    .addComponent(jLabel15))))
-                        .addGap(0, 20, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(pnlNetworkLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblNetworkStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(lblNetworkStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         pnlNetworkLayout.setVerticalGroup(
             pnlNetworkLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -828,12 +835,12 @@ public class GameFrame extends javax.swing.JFrame {
                     .addGroup(pnlNetworkLayout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addComponent(btnJoinGame)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                .addComponent(lblNetworkStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(lblIP, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblPortHost, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblWaiting, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblNetworkStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(btnStartNetworkGame)
                 .addGap(11, 11, 11))
@@ -956,10 +963,10 @@ public class GameFrame extends javax.swing.JFrame {
         boolean tempBool = savePlayer1;     // savePlayer1, savePlayer2 are swapped because they are cheked to load players for overall stats
         savePlayer1 = savePlayer2;
         savePlayer2 = tempBool;
-        tempBool = player1Selected;
+        tempBool = player1Selected;     // swap player selected status
         player1Selected = player2Selected;
         player2Selected = tempBool;
-        int tempVal = player1winStat;
+        int tempVal = player1winStat;    // swap win stats since players are sawpped
         player1winStat = player2WinStat;
         player2WinStat = tempVal;
         btnStartGameActionPerformed(null);
@@ -973,6 +980,7 @@ public class GameFrame extends javax.swing.JFrame {
         playerList.setNames(dbHandler.getPlayersNames());
         pnlSettings.setVisible(false);
         pnlSelectPlayer.setVisible(true);
+        txtPlayerFromList.requestFocus();
     }//GEN-LAST:event_btnSelectPlayer2ActionPerformed
 
     private void btnNetworkGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNetworkGameActionPerformed
@@ -981,7 +989,7 @@ public class GameFrame extends javax.swing.JFrame {
         pnlSettings.setVisible(false);
         pnlSelectPlayer.setVisible(false);
         pnlNetwork.setVisible(true);
-        lblWaiting.setVisible(false);
+        lblNetworkStatus.setVisible(false);
         btnStartNetworkGame.setEnabled(false);
     }//GEN-LAST:event_btnNetworkGameActionPerformed
 
@@ -1012,38 +1020,63 @@ public class GameFrame extends javax.swing.JFrame {
         playerList.setNames(dbHandler.getPlayersNames());
         pnlSettings.setVisible(false);
         pnlSelectPlayer.setVisible(true);
+        txtPlayerFromList.requestFocus();
     }//GEN-LAST:event_btnSelectPlayer1ActionPerformed
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        if (lblSelectPlayerHeader.getText().endsWith("1")) {
+        if (gameMode == 0) {
             if (!player1Selected) {
                 JOptionPane.showMessageDialog(this, "No player selected. Please select a player", "Invalid Name", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            txtPlayer1Name.setText(txtPlayerFromList.getText());
-            chkBoxSavePlayer1.setVisible(false);
+            txtNetPlayerName.setText(txtPlayerFromList.getText());
+            jCheckBox1.setVisible(false);
+            player1Selected = true;
+            pnlSelectPlayer.setVisible(false);
+            pnlNetwork.setVisible(true);
+            pnlSettings.setVisible(false);
         } else {
-            if (!player2Selected) {
-                JOptionPane.showMessageDialog(this, "No player selected. Please select a player", "Invalid Name", JOptionPane.WARNING_MESSAGE);
-                return;
+            if (lblSelectPlayerHeader.getText().endsWith("1")) {
+                if (!player1Selected) {
+                    JOptionPane.showMessageDialog(this, "No player selected. Please select a player", "Invalid Name", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                txtPlayer1Name.setText(txtPlayerFromList.getText());
+                player1Selected = true;
+                chkBoxSavePlayer1.setVisible(false);
+            } else {
+                if (!player2Selected) {
+                    JOptionPane.showMessageDialog(this, "No player selected. Please select a player", "Invalid Name", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                player2Selected = true;
+                txtPlayer2Name.setText(txtPlayerFromList.getText());
+                chkBoxSavePlayer2.setVisible(false);
             }
-            txtPlayer2Name.setText(txtPlayerFromList.getText());
-            chkBoxSavePlayer2.setVisible(false);
+            pnlSelectPlayer.setVisible(false);
+            pnlNetwork.setVisible(false);
+            pnlSettings.setVisible(true);
         }
-        pnlSelectPlayer.setVisible(false);
-        pnlNetwork.setVisible(false);
-        pnlSettings.setVisible(true);
     }//GEN-LAST:event_btnOKActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        if (player1Selected) {
-            chkBoxSavePlayer1.setVisible(false);
-        } else if(player2Selected){
-            chkBoxSavePlayer2.setVisible(false);
+        if (gameMode == 0) {
+            if (player1Selected) {
+                jCheckBox1.setVisible(false);
+            }
+            pnlNetwork.setVisible(true);
+            pnlSelectPlayer.setVisible(false);
+            pnlSettings.setVisible(false);
+        } else {
+            if (player1Selected) {
+                chkBoxSavePlayer1.setVisible(false);
+            } else if (player2Selected) {
+                chkBoxSavePlayer2.setVisible(false);
+            }
+            pnlNetwork.setVisible(false);
+            pnlSelectPlayer.setVisible(false);
+            pnlSettings.setVisible(true);
         }
-        pnlNetwork.setVisible(false);
-        pnlSelectPlayer.setVisible(false);
-        pnlSettings.setVisible(true);
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnStartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartGameActionPerformed
@@ -1077,14 +1110,6 @@ public class GameFrame extends javax.swing.JFrame {
                 if (networkHandler.isClient()){
                     player1 = new Human("Server","X");
                     player2 = new Human(txtNetPlayerName.getText(),"O");
-                    new Thread(){
-                        @Override
-                        public void run(){
-                            int temp = networkHandler.recieveMove();
-                            System.out.println(temp);
-                            board.networkPlay(temp);
-                        }
-                    }.start();
                 }else{
                     player1 = new Human(txtNetPlayerName.getText(),"X");
                     player2 = new Human("Client","O");
@@ -1126,6 +1151,14 @@ public class GameFrame extends javax.swing.JFrame {
         if (player1.getName().equals("Computer")) {
             board.playComputerFirst();
         }
+        if (gameMode==0 && networkHandler.isClient()){
+            new Thread() {
+                @Override
+                public void run() {
+                    networkHandler.recieveMove();
+                }
+            }.start();
+        }
     }//GEN-LAST:event_btnStartGameActionPerformed
 
     private void btnMainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMainMenuActionPerformed
@@ -1157,24 +1190,36 @@ public class GameFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_rBtnHardActionPerformed
 
     private void btnHostGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHostGameActionPerformed
-        lblWaiting.setVisible(true);
-        btnJoinGame.setEnabled(false);
-        txtIPJoin.setEditable(false);
-        txtPort.setEditable(false);
-        int port = networkHandler.startServer();
-        lblPortHost.setText("Port : "+Integer.toString(port));
-        new Thread(){
-            @Override
-            public void run(){
-                networkHandler.acceptPlayer();
-                btnStartNetworkGame.setEnabled(true);
-            }
-        }.start();
+        try {
+            lblNetworkStatus.setVisible(true);
+            btnJoinGame.setEnabled(false);
+            txtIPJoin.setEditable(false);
+            txtPort.setEditable(false);
+            int port = networkHandler.startServer();
+            lblIP.setText("IP Address : "+InetAddress.getLocalHost().getHostAddress());
+            lblPortHost.setText("Port : "+Integer.toString(port));
+            new Thread(){
+                @Override
+                public void run(){
+                    networkHandler.acceptPlayer();
+                    btnStartNetworkGame.setEnabled(true);
+                    lblNetworkStatus.setText("Player connected.");
+                }
+            }.start();
+        } catch (UnknownHostException ex) {
+            logger.error(ex);
+        }
     }//GEN-LAST:event_btnHostGameActionPerformed
 
     private void btnJoinGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinGameActionPerformed
-        networkHandler.connectToServer(txtIPJoin.getText(),Integer.parseInt(txtPort.getText()));
-        btnStartNetworkGame.setEnabled(true);
+        if (networkHandler.connectToServer(txtIPJoin.getText(),Integer.parseInt(txtPort.getText()))){
+            lblNetworkStatus.setText("Joined to Server");
+            lblNetworkStatus.setVisible(true);
+            btnStartNetworkGame.setEnabled(true);
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error! Cannot join to network. please check enetered details", null, JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnJoinGameActionPerformed
 
     private void chkBoxSavePlayer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkBoxSavePlayer1ActionPerformed
@@ -1215,10 +1260,7 @@ public class GameFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnOverallStatsActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        if (networkHandler.isClient()){savePlayer2 = jCheckBox1.isSelected();}
-        else{
             savePlayer1 = jCheckBox1.isSelected();
-        }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void txtPlayer1NameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPlayer1NameKeyReleased
@@ -1245,6 +1287,29 @@ public class GameFrame extends javax.swing.JFrame {
         savePlayer2 = false;
         btnStartGameActionPerformed(evt);
     }//GEN-LAST:event_btnStartNetworkGameActionPerformed
+
+    private void btnNetSelectFromListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNetSelectFromListActionPerformed
+        lblSelectPlayerHeader.setText("Select Player");
+        savePlayer1 = false;
+        txtPlayerFromList.setText("Type to search...");
+        playerList.setNames(dbHandler.getPlayersNames());
+        pnlNetwork.setVisible(false);
+        pnlSelectPlayer.setVisible(true);
+        txtPlayerFromList.requestFocus();
+    }//GEN-LAST:event_btnNetSelectFromListActionPerformed
+
+    private void lstPlayersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstPlayersMouseClicked
+        if (gameMode==0){
+                    player1Selected = true;
+                }else{
+                    if (lblSelectPlayerHeader.getText().endsWith("1")) {    // player 1 is selected
+                        player1Selected = true;
+                    } else {           // player 2 is selected
+                        player2Selected = true;
+                    }
+                }
+                txtPlayerFromList.setText((String) lstPlayers.getSelectedValue());  // get the name from list and set to selected player text
+    }//GEN-LAST:event_lstPlayersMouseClicked
 
     private boolean isValidName() {
         if (txtPlayer1Name.getText().equals("") || txtPlayer2Name.getText().equals("")) {
@@ -1312,6 +1377,7 @@ public class GameFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDifficulty;
+    private javax.swing.JLabel lblIP;
     private javax.swing.JLabel lblNetworkStatus;
     protected javax.swing.JLabel lblPlayer1Stat;
     protected javax.swing.JLabel lblPlayer1Win;
@@ -1322,7 +1388,6 @@ public class GameFrame extends javax.swing.JFrame {
     protected javax.swing.JLabel lblStatus;
     private javax.swing.JLabel lblTies;
     protected javax.swing.JLabel lblTiesStat;
-    private javax.swing.JLabel lblWaiting;
     private javax.swing.JList lstPlayers;
     private javax.swing.JPanel pnlBoard;
     private javax.swing.JPanel pnlHeader;
@@ -1364,7 +1429,7 @@ public class GameFrame extends javax.swing.JFrame {
     public void updateNetworkStatus(int status){
         switch (status) {
             case 0:
-                lblWaiting.setVisible(true);
+                lblNetworkStatus.setVisible(true);
                 btnJoinGame.setEnabled(false);
                 txtIPJoin.setEditable(false);
                 txtPort.setEditable(false);

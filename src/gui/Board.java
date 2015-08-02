@@ -215,14 +215,13 @@ public class Board extends Canvas implements MouseListener{
             if (moves[position].equals("")){
                 if (netMyTurn){
                     networkHandler.sendMove(position);
-                    Board board = this;
                     new Thread(){
                         public void run(){
-                            board.networkPlay(networkHandler.recieveMove());
+                            networkHandler.recieveMove();
                         }
                     }.start();
                     netMyTurn = false;
-                    System.out.println("move set");
+                    System.out.println("move sent");
                 }
                 if (currentPlayer==0){
                     drawX();
@@ -348,10 +347,10 @@ public class Board extends Canvas implements MouseListener{
     }
     
     public void networkPlay(int position){
-        System.out.println("network"+position);
+        System.out.println("network "+position);
         setBoundries(position);
         mouseClicked(null);
-        System.out.println("draw");
+        System.out.println("network played");
         netMyTurn = true;
     }
     
