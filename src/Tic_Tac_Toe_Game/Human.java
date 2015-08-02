@@ -8,7 +8,8 @@ public class Human extends Player{
     private int ties = 0;
     
     @Override
-    public int play(String[] board,Player opponent,int pos) {
+    public int play(int pos) {
+        // update allignment according to played box
         setAlignment(pos, 1);
         return 0;
     }

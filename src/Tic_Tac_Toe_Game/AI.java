@@ -12,23 +12,22 @@ public class AI {
         players = new Player[2];
     }
 
-    public int minmax(int d, boolean computerPlayer){
-        int score = getScore(d);
-        if (d == depth || turn == 9){
-            return score;
+    public int minmax(int d, boolean computerPlayer){       // minmax algorithm
+        if (d == depth || turn == 9){   
+            return getScore();
         }
         int bestValue;
         if (computerPlayer){
             bestValue = -1000;
             for (int i = 0; i < 9;i++){
                 if ("".equals(board[i])){
-                    update(i,false);
+                    update(i,false);    // play the next available move for computer
                     int val = minmax(d+1, false);
                     if (val>=bestValue){bestValue = val;}
                     if (d==0){
                         nextMoves[i] = val;
                     }
-                    update(i,true);
+                    update(i,true);     // undo the changes from the abouve play turn
                 }
             }
             return bestValue;
@@ -36,20 +35,21 @@ public class AI {
             bestValue = 1000;
             for (int i = 0; i < board.length;i++){
                 if ("".equals(board[i])){
-                    update(i,false);
+                    update(i,false);    // play the next available move for opponent
                     int val = minmax(d+1, true);
                     if (val<=bestValue){bestValue = val;}
                     if (d == 0){
                         nextMoves[i] = val;
                     }
-                    update(i,true);
+                    update(i,true);     // undo the changes from the abouve play turn
                 }
             }
         }
         return bestValue;
     }
     
-    private int getScore(int d){
+    private int getScore(){
+        /* heuristic function to calculate the score of a state */
         int[] currentPlayerAlignments = players[1-turn%2].getAlignments();
         int[] nextPlayerAlignments = players[turn%2].getAlignments();
         int total = 0;
@@ -57,11 +57,11 @@ public class AI {
             if (currentPlayerAlignments[i]==3){total += 100;}
             else if (currentPlayerAlignments[i]==2 && nextPlayerAlignments[i]==0){total += 10;}
             else if (currentPlayerAlignments[i]==1 && nextPlayerAlignments[i]==0){total += 1;}
+            else if (currentPlayerAlignments[i]==0 && nextPlayerAlignments[i]==1){total += -1;}
+            else if (currentPlayerAlignments[i]==0 && nextPlayerAlignments[i]==2){total += -10;}
+            else if (nextPlayerAlignments[i]==3){total += -100;}
         }
-        if (players[1-turn%2].getName().equals("Computer")){
-            return total;
-        }
-        return -total;
+        return total;
     }
     
     public int getNext(String[] board,Player computer,Player human,int turn,int depth){

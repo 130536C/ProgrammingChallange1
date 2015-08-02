@@ -1,9 +1,10 @@
 
 package gui;
 
+import Tic_Tac_Toe_Game.Computer;
 import Tic_Tac_Toe_Game.Human;
 import Tic_Tac_Toe_Game.Player;
-import io.DBHandler;
+import io.*;
 import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -13,9 +14,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import org.apache.log4j.Logger;
 
 public class Board extends Canvas implements MouseListener{
     
@@ -25,14 +25,18 @@ public class Board extends Canvas implements MouseListener{
     private String[] moves;
     private Player[] player;
     private int turn = 0,currentPlayer;
-    private boolean win,draw,myTurn;
+    private boolean win,draw,netMyTurn;
     private GameFrame game;
     private DBHandler dbHandler;
+    private NetworkHandler networkHandler;
+    
+    private static Logger logger = Logger.getLogger(Board.class);
     
     public Board(GameFrame game,Player player1, Player player2,DBHandler dbHandler){
         moves = new String[]{"","","","","","","","",""};
         player = new Player[]{player1,player2};
         win = false; draw = false;
+        this.netMyTurn = false;
         this.game = game;
         this.dbHandler = dbHandler;
         this.setIgnoreRepaint(true);
@@ -43,7 +47,7 @@ public class Board extends Canvas implements MouseListener{
         try {
             bg = ImageIO.read(getClass().getResourceAsStream("/Resources/background.jpg"));
         } catch (IOException ex) {
-            ex.printStackTrace();
+            logger.error("Cannot read background image",ex);
         }
         Graphics2D g = (Graphics2D) this.getGraphics();
         g.drawImage(bg, 0, 0, this);
@@ -60,7 +64,7 @@ public class Board extends Canvas implements MouseListener{
             try {
                 Thread.sleep(1);
             } catch (InterruptedException ex) {
-                ex.printStackTrace();
+                logger.debug("Thread interrupted",ex);
             }
             Toolkit.getDefaultToolkit().sync();
             g.dispose();
@@ -68,7 +72,7 @@ public class Board extends Canvas implements MouseListener{
         try {
             Thread.sleep(2);
         } catch (InterruptedException ex) {
-            ex.printStackTrace();
+            logger.debug("Thread interrupted",ex);
         }
         for (int i=80;i>=20;i--){
             int j = 100-i;
@@ -78,7 +82,7 @@ public class Board extends Canvas implements MouseListener{
             try {
                 Thread.sleep(2);
             } catch (InterruptedException ex) {
-                ex.printStackTrace();
+                logger.debug("Thread interrupted",ex);
             }
             Toolkit.getDefaultToolkit().sync();
             g.dispose();
@@ -95,7 +99,6 @@ public class Board extends Canvas implements MouseListener{
     }
     
     private void drawAlignment(int alignment){
-        System.out.println(alignment);
         if (alignment < 3){
             int x = 50,boundryX = 100*alignment;
             for (int y = 10; y < 290; y++){
@@ -105,7 +108,7 @@ public class Board extends Canvas implements MouseListener{
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.debug("Thread interrupted",ex);
                 }
                 Toolkit.getDefaultToolkit().sync();
                 g.dispose();
@@ -121,7 +124,7 @@ public class Board extends Canvas implements MouseListener{
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.debug("Thread interrupted",ex);
                 }
                 Toolkit.getDefaultToolkit().sync();
                 g.dispose();
@@ -136,7 +139,7 @@ public class Board extends Canvas implements MouseListener{
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.debug("Thread interrupted",ex);
                 }
                 Toolkit.getDefaultToolkit().sync();
                 g.dispose();
@@ -151,7 +154,7 @@ public class Board extends Canvas implements MouseListener{
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.debug("Thread interrupted",ex);
                 }
                 Toolkit.getDefaultToolkit().sync();
                 g.dispose();
@@ -173,7 +176,8 @@ public class Board extends Canvas implements MouseListener{
     }
     
     public void playComputerFirst(){
-        position = player[turn%2].play(moves, player[(turn+1)%2], turn);
+        Computer computer = (Computer) player[turn%2];
+        position = computer.play(moves, player[(turn+1)%2], turn);
         setBoundries(position);
         mouseClicked(null);
     }
@@ -205,10 +209,21 @@ public class Board extends Canvas implements MouseListener{
     public void mouseClicked(MouseEvent e) {
         if (!win && !draw){
             currentPlayer = turn%2;
-            if (!player[currentPlayer].getName().equals("Computer")){
+            if ((game.gameMode>0 && !player[currentPlayer].getName().equals("Computer")) || netMyTurn){
                 setPosition(e.getX(),e.getY());
             }
             if (moves[position].equals("")){
+                if (netMyTurn){
+                    networkHandler.sendMove(position);
+                    Board board = this;
+                    new Thread(){
+                        public void run(){
+                            board.networkPlay(networkHandler.recieveMove());
+                        }
+                    }.start();
+                    netMyTurn = false;
+                    System.out.println("move set");
+                }
                 if (currentPlayer==0){
                     drawX();
                     game.lblStatus.setText(player[1-currentPlayer].getName()+"'s turn - "+player[1-currentPlayer].getSymbol());
@@ -219,7 +234,8 @@ public class Board extends Canvas implements MouseListener{
                 }
                 moves[position] = player[currentPlayer].getSymbol();
                 if (!player[currentPlayer].getName().equals("Computer")){
-                    player[currentPlayer].play(moves, player[1-currentPlayer], position);
+                    Human human = (Human) player[currentPlayer];
+                    human.play(position);
                 }
                 int alignment = Player.isWin(player[currentPlayer].getAlignments());
                 if (alignment!=-1){
@@ -245,7 +261,8 @@ public class Board extends Canvas implements MouseListener{
                 }
                 turn++;
                 if (game.gameMode==1 && player[1-currentPlayer].getName().equals("Computer")){
-                    position = player[1-currentPlayer].play(moves, player[currentPlayer], turn);
+                    Computer computer = (Computer) player[1-currentPlayer];
+                    position = computer.play(moves, player[currentPlayer], turn);
                     setBoundries(position);
                     mouseClicked(null);
                 }
@@ -278,16 +295,22 @@ public class Board extends Canvas implements MouseListener{
                     temp1.setTies(temp1.getTies() + 1);
                     temp2.setTies(temp2.getTies() + 1);
                 }
-                new Thread() {
-                    public void run() {
-                        dbHandler.updatePlayer(temp1);
-                    }
-                }.start();
-                new Thread() {
-                    public void run() {
-                        dbHandler.updatePlayer(temp2);
-                    }
-                }.start();
+                if (game.savePlayer1){
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            dbHandler.updatePlayer(temp1);
+                        }
+                    }.start();
+                }
+                if (game.savePlayer2){
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            dbHandler.updatePlayer(temp2);
+                        }
+                    }.start();
+                }
                 break;
             case 1:
                 Human temp;
@@ -315,5 +338,21 @@ public class Board extends Canvas implements MouseListener{
                 break;
         }
     }        
+ 
+    public void setnetMyTurn(boolean netMyTurn){
+        this.netMyTurn = netMyTurn;
+    }
+    
+    public void setNetworkHandler(NetworkHandler networkHandler) {
+        this.networkHandler = networkHandler;
+    }
+    
+    public void networkPlay(int position){
+        System.out.println("network"+position);
+        setBoundries(position);
+        mouseClicked(null);
+        System.out.println("draw");
+        netMyTurn = true;
+    }
     
 }

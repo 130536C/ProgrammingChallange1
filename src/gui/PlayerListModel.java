@@ -8,6 +8,10 @@ public class PlayerListModel extends AbstractListModel{
     
     private ArrayList<String> completeNames;
     private ArrayList<String> selecetedNames;
+
+    public PlayerListModel() {
+        this.selecetedNames = new ArrayList<>();
+    }
     
     @Override
     public int getSize() {

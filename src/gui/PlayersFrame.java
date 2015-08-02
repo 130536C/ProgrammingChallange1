@@ -177,7 +177,6 @@ public class PlayersFrame extends javax.swing.JFrame {
     }
     
     public void setUp(Human player1, Human player2){
-        //dbHandler.refresh();
         ArrayList<Human> players = new ArrayList<Human>();
         if (player1!=null){
             players.add(player1);
